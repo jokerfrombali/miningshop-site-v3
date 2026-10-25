@@ -1,0 +1,66 @@
+# MiningShop
+
+> Магазин видеокарт, серверов и сборок для нейросетей в Москве, работает с 2017 года. Продаём видеокарты для ИИ (Tesla V100, P40, RTX 3090, 4090, 5090, RTX PRO 6000, A100, H100, H200), собираем станции и серверы под локальные LLM, выкупаем видеокарты и принимаем их в трейд-ин. Также ASIC-майнеры, майнинг-фермы и хостинг.
+
+Телефон: 8 (800) 200-32-64. Почта: info@miningshop.ru. Telegram: @miningshop. Адрес: г. Москва, шоссе Энтузиастов, 56, стр. 20.
+
+## Каталог
+- [Видеокарты для ИИ](https://miningshop.ru/catalog/videokarty/)
+- [Серверы для ИИ](https://miningshop.ru/catalog/servery-dlya-ii/)
+- [Сборки для локального ИИ и платформы без видеокарт](https://miningshop.ru/catalog/sborki-dlya-ii/)
+- [Комплектующие: NVLink, SXM2, охлаждение Tesla, райзеры, платы](https://miningshop.ru/catalog/komplektuyushchie/)
+- [Майнинг-фермы на видеокартах](https://miningshop.ru/catalog/mayning_fermy/)
+- [ASIC-майнеры](https://miningshop.ru/catalog/asic_maynery/)
+
+## Видеокарты
+- [NVIDIA Tesla V100 — 32 ГБ HBM2 за разумные деньги](https://miningshop.ru/catalog/videokarty/tesla-v100/)
+- [NVIDIA Tesla V100 SXM2 — самый дешёвый способ собрать 4–8 карт с NVLink](https://miningshop.ru/catalog/videokarty/tesla-v100-sxm2/)
+- [NVIDIA Tesla P40 — самые дешёвые 24 ГБ под инференс](https://miningshop.ru/catalog/videokarty/tesla-p40/)
+- [NVIDIA Tesla P100 — быстрая HBM2 и нормальный FP16 за небольшие деньги](https://miningshop.ru/catalog/videokarty/tesla-p100/)
+- [NVIDIA Tesla T4 — экономичный инференс в любой сервер](https://miningshop.ru/catalog/videokarty/tesla-t4/)
+- [NVIDIA Tesla M40 и K80 — самый дешёвый вход, но с оговорками](https://miningshop.ru/catalog/videokarty/tesla-m40-k80/)
+- [NVIDIA A100 — рабочая лошадка для обучения и инференса](https://miningshop.ru/catalog/videokarty/a100/)
+- [NVIDIA H100 — стандарт для обучения LLM](https://miningshop.ru/catalog/videokarty/h100/)
+- [NVIDIA H200 — флагман Hopper со 141 ГБ памяти](https://miningshop.ru/catalog/videokarty/h200/)
+- [NVIDIA B200 и B300 — текущее поколение для ИИ-кластеров](https://miningshop.ru/catalog/videokarty/b200-b300/)
+- [NVIDIA L40S, L40 и L4 — серверные Ada для инференса и генерации](https://miningshop.ru/catalog/videokarty/l40s-l4/)
+- [NVIDIA A16, A40, A30, A10, A2 — серверные Ampere под инференс и виртуальные рабочие места](https://miningshop.ru/catalog/videokarty/a-series/)
+- [NVIDIA RTX PRO 6000 Blackwell — 96 ГБ в одной карте](https://miningshop.ru/catalog/videokarty/rtx-pro-6000/)
+- [NVIDIA RTX 6000 Ada — 48 ГБ с FP8 в двухслотовой карте](https://miningshop.ru/catalog/videokarty/rtx-6000-ada/)
+- [NVIDIA RTX A6000 — 48 ГБ и NVLink по цене ниже Ada](https://miningshop.ru/catalog/videokarty/rtx-a6000/)
+- [NVIDIA RTX A4000, A5000, 4000 и 5000 Ada — тихие профессиональные карты для офиса](https://miningshop.ru/catalog/videokarty/rtx-a4000-a5000/)
+- [NVIDIA GeForce RTX 3090 — самые доступные 24 ГБ с тензорными ядрами](https://miningshop.ru/catalog/videokarty/rtx-3090/)
+- [NVIDIA GeForce RTX 4090 — быстрые 24 ГБ с FP8](https://miningshop.ru/catalog/videokarty/rtx-4090/)
+- [RTX 4090 48 ГБ — 48 ГБ по цене ниже профессиональных карт](https://miningshop.ru/catalog/videokarty/rtx-4090-48gb/)
+- [NVIDIA GeForce RTX 5090 — самая мощная потребительская карта](https://miningshop.ru/catalog/videokarty/rtx-5090/)
+- [AMD Instinct MI50, MI100, MI210 — много HBM-памяти за небольшие деньги](https://miningshop.ru/catalog/videokarty/amd-instinct/)
+- [AMD Radeon AI PRO R9700 и RX 7900 XTX — 32 ГБ от AMD для рабочих станций](https://miningshop.ru/catalog/videokarty/radeon-ai-pro/)
+
+## Услуги
+- [Выкуп видеокарт](https://miningshop.ru/services/vykup-videokart/)
+- [Трейд-ин видеокарт](https://miningshop.ru/services/trade-in-videokart/)
+- [Сборка сервера для ИИ](https://miningshop.ru/services/sborka-servera-dlya-ii/)
+- [Аренда GPU](https://miningshop.ru/services/arenda-gpu/)
+- [Размещение GPU-серверов](https://miningshop.ru/services/gpu-hosting/)
+
+## Справочные материалы
+- [Калькулятор видеопамяти для LLM](https://miningshop.ru/calc/vram/)
+- [Какую видеокарту выбрать для ИИ в 2026 году](https://miningshop.ru/blog/videokarta-dlya-ii/)
+- [Сколько видеопамяти нужно для нейросети](https://miningshop.ru/blog/skolko-vram-nuzhno/)
+- [Как запустить нейросеть локально](https://miningshop.ru/blog/lokalnaya-neyroset/)
+- [Локальные LLM: какие модели и какое железо](https://miningshop.ru/blog/lokalnaya-llm/)
+- [DeepSeek локально: требования и железо](https://miningshop.ru/blog/deepseek-lokalno/)
+- [Qwen локально: на чём запускать](https://miningshop.ru/blog/qwen-lokalno/)
+- [Ollama или LM Studio](https://miningshop.ru/blog/ollama-ili-lm-studio/)
+- [vLLM и llama.cpp на Tesla V100 и P40](https://miningshop.ru/blog/vllm-na-tesla-v100/)
+- [Tesla P40, P100, V100 и K80: что выбрать](https://miningshop.ru/blog/tesla-p40-vs-v100/)
+- [A100, RTX 4090, RTX PRO 6000 или L40S](https://miningshop.ru/blog/a100-vs-rtx-4090/)
+- [Tesla V100, P100, P40 и K80 в играх](https://miningshop.ru/blog/tesla-v-igrakh/)
+- [Как охладить Tesla P40 и V100](https://miningshop.ru/blog/okhlazhdenie-tesla/)
+- [Tesla V100 SXM2 в обычном ПК](https://miningshop.ru/blog/sxm2-v-pcie/)
+- [Нужен ли NVLink для нейросетей](https://miningshop.ru/blog/nvlink-dlya-ii/)
+- [NVIDIA DGX Spark: обзор и аналоги](https://miningshop.ru/blog/dgx-spark-obzor/)
+- [Как собрать сервер для ИИ](https://miningshop.ru/blog/kak-sobrat-server-dlya-ii/)
+- [Как проверить б/у видеокарту](https://miningshop.ru/blog/kak-proverit-bu-videokartu/)
+- [Что майнить на видеокартах в 2026 году](https://miningshop.ru/blog/chto-maynit-na-videokarte/)
+- [NVIDIA CMP 170HX и 90HX](https://miningshop.ru/blog/cmp-170hx-90hx/)

@@ -41,6 +41,10 @@ def target(path, known):
         return None
     if parts[0] == 'forum':
         return 'GONE'
+    if parts[0] == 'seo' and 's21-xp-hyd' in low:
+        return '/catalog/asic_maynery/bitmain/antminer-s21-xp-hydro-473th/'
+    if parts[0] in ('news', 'knowledge'):
+        return '/blog/'
     if parts[0] == 'services':
         return {'remont-asikov': '/services/remont-oborudovaniya/', 'ustanovka-proshivki-razgon': '/services/remont-oborudovaniya/',
                 'meeting': '/contacts/'}.get(parts[1] if len(parts) > 1 else '', '/services/')
@@ -90,7 +94,8 @@ def target(path, known):
 def build(known):
     """Возвращает [(старый адрес, новый адрес или 'GONE')] для всех старых адресов, которые не совпадают с новыми."""
     old = [x.strip() for x in open(os.path.join(HERE, 'data', 'legacy_urls.txt'), encoding='utf-8') if x.strip()]
-    old += ['/knowledge/', '/forum/']
+    old += ['/knowledge/', '/forum/', '/news/', '/seo/antminer-s21-xp-hyd/'] + [
+        '/knowledge/%s/' % r for r in ('basics', 'hardware', 'maintenance', 'security', 'setup', 'software')]
     out = []
     for path in sorted(set(old)):
         dst = target(path, known)

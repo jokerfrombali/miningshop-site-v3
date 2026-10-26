@@ -10,6 +10,15 @@ import html, json, os, re
 BASE = os.environ.get('MS_BASE', '/miningshop-site-v3')
 PROD = 'https://miningshop.ru'            # canonical всегда указывает на будущий боевой адрес
 TEMPORARY = os.environ.get('MS_TEMP', '1') == '1'
+METRIKA = 45472341   # счётчик miningshop.ru с 2017 года — не менять, иначе потеряется история
+
+METRIKA_JS = ('<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();'
+              'for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}'
+              'k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})'
+              '(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");'
+              'ym(%d,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});</script>'
+              '<noscript><div><img src="https://mc.yandex.ru/watch/%d" style="position:absolute;left:-9999px" alt=""></div></noscript>'
+              % (METRIKA, METRIKA))
 
 C = {
     'brand': 'MiningShop',
@@ -202,7 +211,8 @@ def footer():
                              ('Ремонт асиков', '/services/remont-oborudovaniya/')])
             + col('Компания', [('Калькулятор видеопамяти', '/calc/vram/'), ('Доходность асиков', '/table/'), ('Статьи', '/blog/'),
                                ('О компании', '/company/about/'), ('Доставка и оплата', '/company/delivery/'),
-                               ('Гарантия', '/company/guarantee/'), ('Контакты', '/contacts/'), ('Политика конфиденциальности', '/privacy/')])
+                               ('Гарантия', '/company/guarantee/'), ('Контакты', '/contacts/'), ('Политика конфиденциальности', '/privacy/'),
+                               ('Пользовательское соглашение', '/terms/')])
             + '</div><div class="ftr-bottom"><span>© %d–2026 MiningShop. Информация на сайте не является публичной офертой.</span>'
               '<span>Расчёты доходности — ориентировочные, не инвестиционная рекомендация.</span></div></div></footer>' % C['since'])
 
@@ -262,10 +272,10 @@ def render(pg):
         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@400;500;700&display=swap">'
         '<link rel="stylesheet" href="%s">'
         '<link rel="icon" href="%s">'
-        '<script type="application/ld+json">%s</script>'
+        '<script type="application/ld+json">%s</script>%s'
         '</head><body>'
         % (esc(pg['title']), esc(pg['description']), robots, PROD + path, esc(pg['title']), esc(pg['description']),
-           PROD + path, u('/assets/site.css'), u('/assets/img/ui/favicon.svg'), ld_json))
+           PROD + path, u('/assets/site.css'), u('/assets/img/ui/favicon.svg'), ld_json, '' if TEMPORARY else METRIKA_JS))
     return (head + header(path) + '<main>' + top + pg['body'] + '</main>' + footer()
             + '<script src="%s" defer></script></body></html>' % u('/assets/site.js'))
 

@@ -157,4 +157,72 @@
     calc.querySelectorAll('input').forEach(function (el) { el.addEventListener('input', run); });
     run();
   }
+
+  // --- v4: каталог-меню в шапке ---
+  var mbtn = document.querySelector('.mega-btn'), mega = document.getElementById('mega');
+  if (mbtn && mega) {
+    mbtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      mega.hidden = !mega.hidden; mbtn.setAttribute('aria-expanded', mega.hidden ? 'false' : 'true');
+    });
+    document.addEventListener('click', function (e) { if (!mega.hidden && !mega.contains(e.target)) { mega.hidden = true; mbtn.setAttribute('aria-expanded', 'false'); } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { mega.hidden = true; mbtn.setAttribute('aria-expanded', 'false'); } });
+  }
+
+  // --- v4: поиск по сайту без внешних сервисов (индекс assets/search.json собирается при сборке) ---
+  var q = document.getElementById('q');
+  if (q) {
+    var box = q.parentNode.querySelector('.search-res'), idx = null;
+    var base = (document.querySelector('meta[name="ms-base"]') || {}).content || '';
+    var norm = function (s) { return s.toLowerCase().replace(/ё/g, 'е').replace(/[×x]/g, ' ').replace(/\s+/g, ' '); };
+    var run = function () {
+      var v = norm(q.value.trim());
+      if (v.length < 2 || !idx) { box.hidden = true; return; }
+      var words = v.split(' ');
+      var hits = idx.filter(function (r) { var t = norm(r[0] + ' ' + r[1]); return words.every(function (w) { return t.indexOf(w) >= 0; }); }).slice(0, 8);
+      box.innerHTML = hits.length ? hits.map(function (r) { return '<a href="' + r[1] + '">' + r[0].replace(/</g, '&lt;') + '</a>'; }).join('')
+        : '<div class="none">Ничего не нашли. Позвоните — подскажем: 8 (800) 200-32-64</div>';
+      box.hidden = false;
+    };
+    q.addEventListener('focus', function () {
+      if (idx) return;
+      fetch(base + '/assets/search.json').then(function (r) { return r.json(); }).then(function (d) { idx = d; run(); }).catch(function () {});
+    });
+    q.addEventListener('input', run);
+    q.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { var f = box.querySelector('a'); if (f) location.href = f.href; }
+      if (e.key === 'Escape') { box.hidden = true; }
+    });
+    document.addEventListener('click', function (e) { if (!q.parentNode.contains(e.target)) box.hidden = true; });
+  }
+
+  // --- v4: конфигуратор фермы ---
+  document.querySelectorAll('[data-config]').forEach(function (el) {
+    var cfg = JSON.parse(el.dataset.config), card = cfg.cards.filter(function (c) { return c.k === cfg.def; })[0] || cfg.cards[0], n = 6;
+    var MODELS = [['Llama 3 8B, Qwen 14B', 16], ['Qwen 32B в 8 битах', 40], ['Llama 70B в 4 битах', 46], ['Llama 70B в 8 битах', 82],
+                  ['Qwen3 235B в 4 битах', 150], ['Llama 70B без сжатия (16 бит)', 160], ['DeepSeek V3 / R1 671B в 4 битах', 400]];
+    var fmt = function (x) { return x.toLocaleString('ru-RU'); };
+    var btns = function (box, items, cur, cb) {
+      box.innerHTML = '';
+      items.forEach(function (it) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = it[1];
+        b.setAttribute('aria-pressed', it[0] === cur ? 'true' : 'false');
+        b.addEventListener('click', function () { cb(it[0]); }); box.appendChild(b);
+      });
+    };
+    var render = function () {
+      btns(el.querySelector('[data-cfg-card]'), cfg.cards.map(function (c) { return [c.k, c.n]; }), card.k,
+           function (k) { card = cfg.cards.filter(function (c) { return c.k === k; })[0]; render(); });
+      btns(el.querySelector('[data-cfg-n]'), [[4, '4'], [6, '6'], [8, '8']], n, function (k) { n = k; render(); });
+      var vram = card.gb * n, watt = card.w * n + 400, psu = Math.ceil(watt * 1.25 / 100) / 10;
+      el.querySelector('[data-o="vram"]').textContent = fmt(vram) + ' ГБ';
+      el.querySelector('[data-o="power"]').textContent = (Math.round(watt / 100) / 10).toString().replace('.', ',') + ' кВт';
+      el.querySelector('[data-o="psu"]').textContent = psu.toString().replace('.', ',') + ' кВт';
+      el.querySelector('[data-o="fit"]').innerHTML = MODELS.map(function (m) {
+        var ok = vram >= m[1]; return '<li class="' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓ ' : '✗ ') + m[0] + '</li>'; }).join('');
+      var text = 'Здравствуйте! Интересует ферма: ' + n + ' × ' + card.n + ', ' + vram + ' ГБ видеопамяти. Сколько стоит и какие сроки?';
+      el.querySelector('[data-o="tg"]').href = 'https://t.me/miningshop?text=' + encodeURIComponent(text);
+    };
+    render();
+  });
 })();

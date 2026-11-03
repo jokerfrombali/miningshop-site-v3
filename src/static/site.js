@@ -181,7 +181,7 @@
       var words = v.split(' ');
       var hits = idx.filter(function (r) { var t = norm(r[0] + ' ' + r[1]); return words.every(function (w) { return t.indexOf(w) >= 0; }); }).slice(0, 8);
       box.innerHTML = hits.length ? hits.map(function (r) { return '<a href="' + r[1] + '">' + r[0].replace(/</g, '&lt;') + '</a>'; }).join('')
-        : '<div class="none">Ничего не нашли. Позвоните — подскажем: 8 (800) 200-32-64</div>';
+        : '<div class="none">Ничего не нашли. Позвоните — подскажем: +7 (999) 499-96-96</div>';
       box.hidden = false;
     };
     q.addEventListener('focus', function () {

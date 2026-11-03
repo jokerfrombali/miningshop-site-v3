@@ -22,7 +22,7 @@ METRIKA_JS = ('<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[
 
 C = {
     'brand': 'MiningShop',
-    'phone': '8 (800) 200-32-64', 'phone_href': 'tel:+78002003264', 'phone_note': 'Бесплатно по России',
+    'phone': '+7 (999) 499-96-96', 'phone_href': 'tel:+79994999696', 'phone_note': '',
     'email': 'info@miningshop.ru',
     'tg': 'https://t.me/miningshop', 'tg_name': '@miningshop',
     'youtube': 'https://www.youtube.com/channel/UCZuNz7CLAENZIeyAooKW0oQ',   # канал со старого сайта
@@ -245,7 +245,7 @@ def header(path):
             '<form class="search" role="search" onsubmit="return false"><label class="sr" for="q">Поиск по сайту</label>'
             '<input id="q" type="search" placeholder="Поиск: RTX 3090, сервер для LLM, ферма…" autocomplete="off">'
             '%s<div class="search-res" hidden></div></form>'
-            '<div class="hdr-contact"><a href="%s">%s</a><small>%s, бесплатно по России</small></div>'
+            '<div class="hdr-contact"><a href="%s">%s</a><small>%s</small></div>'
             '<a class="btn btn-accent btn-sm hdr-cta" href="%s">Заказать звонок</a>'
             '<button class="burger" aria-controls="nav" aria-expanded="false" aria-label="Меню">%s</button>'
             '</div><div class="mega" id="mega" hidden><div class="wrap">%s</div></div>'
@@ -288,7 +288,7 @@ def footer():
 
 ORG_LD = {
     "@type": "Organization", "@id": PROD + "/#org", "name": "MiningShop", "url": PROD + "/",
-    "logo": PROD + "/assets/img/ui/logo@2x.webp", "email": C['email'], "telephone": "+7-800-200-32-64",
+    "logo": PROD + "/assets/img/ui/logo@2x.webp", "email": C['email'], "telephone": "+7-999-499-96-96",
     "address": {"@type": "PostalAddress", "addressCountry": "RU", "addressLocality": "Москва",
                 "streetAddress": "шоссе Энтузиастов, 56, стр. 20"},
     "sameAs": [C['tg']],

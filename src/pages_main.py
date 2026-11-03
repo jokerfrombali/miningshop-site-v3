@@ -124,7 +124,7 @@ home_body = (
     ], 3), title='Майнинг', sub='С майнинга мы начинали — асики, фермы и сервис никуда не делись.')
     + section('<div style="max-width:880px">' + faq_html(home_faq) + '</div>', cls='sec-soft', title='Частые вопросы')
     + section('<div class="grid g2"><div class="contact-list">'
-              '<div><div class="ico">%s</div><div><b>Телефон, бесплатно по России</b><a href="%s">%s</a></div></div>'
+              '<div><div class="ico">%s</div><div><b>Телефон</b><a href="%s">%s</a></div></div>'
               '<div><div class="ico">%s</div><div><b>Почта</b><a href="mailto:%s">%s</a></div></div>'
               '<div><div class="ico">%s</div><div><b>Telegram</b><a href="%s">%s</a></div></div></div>'
               '<div class="card"><h3>Офис в Москве</h3><p>%s<br>%s</p><p style="margin-top:16px"><a class="btn btn-line btn-sm" href="%s">Все контакты</a></p></div></div>'
@@ -138,7 +138,7 @@ add(path='/', kind='home',
     h1='', hero=hero + trust(), body=home_body,
     ld=[faq_ld(home_faq), {"@type": "WebSite", "name": "MiningShop", "url": "https://miningshop.ru/"},
         {"@type": "Store", "name": "MiningShop", "url": "https://miningshop.ru/", "parentOrganization": {"@id": "https://miningshop.ru/#org"},
-         "telephone": "+7-800-200-32-64", "address": {"@type": "PostalAddress", "addressCountry": "RU", "addressLocality": "Москва",
+         "telephone": "+7-999-499-96-96", "address": {"@type": "PostalAddress", "addressCountry": "RU", "addressLocality": "Москва",
                                                      "streetAddress": "шоссе Энтузиастов, 56, стр. 20"}}])
 
 # ================================================================== каталог
@@ -238,13 +238,13 @@ add(path='/company/about/', kind='page', title='О компании MiningShop �
 
 # ================================================================== контакты
 map_link = 'https://yandex.ru/maps/?text=' + 'Москва, шоссе Энтузиастов, 56с20'
-add(path='/contacts/', kind='page', title='Контакты MiningShop: телефон 8 (800) 200-32-64, офис в Москве',
-    description='Связаться с MiningShop: телефон 8 (800) 200-32-64 (бесплатно по России), info@miningshop.ru, Telegram @miningshop. '
+add(path='/contacts/', kind='page', title='Контакты MiningShop: телефон +7 (999) 499-96-96, офис в Москве',
+    description='Связаться с MiningShop: телефон +7 (999) 499-96-96, info@miningshop.ru, Telegram @miningshop. '
                 'Офис: Москва, шоссе Энтузиастов, 56, стр. 20.',
     h1='Контакты', lead='Ответим на вопросы о подборе, доставке, настройке и размещении оборудования.',
     crumbs=[('Контакты', '/contacts/')],
     body=section('<div class="grid g2"><div class="contact-list">'
-                 '<div><div class="ico">%s</div><div><b>Телефон, бесплатно по России</b><a href="%s">%s</a></div></div>'
+                 '<div><div class="ico">%s</div><div><b>Телефон</b><a href="%s">%s</a></div></div>'
                  '<div><div class="ico">%s</div><div><b>Почта</b><a href="mailto:%s">%s</a></div></div>'
                  '<div><div class="ico">%s</div><div><b>Telegram</b><a href="%s">%s</a></div></div>'
                  '<div><div class="ico">%s</div><div><b>Режим работы</b><span>%s, сб–вс — выходной</span></div></div></div>'

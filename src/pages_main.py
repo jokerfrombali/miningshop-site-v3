@@ -86,12 +86,13 @@ home_body = (
         ('bolt', 'GPU-фермы для ИИ', 'Фермы на 6–8 видеокарт: 144–384 ГБ памяти по самой низкой цене за гигабайт.', '/catalog/mayning_fermy/'),
     ], 4), cls='sec-soft', title='Что мы делаем',
         sub='Магазин видеокарт с 2017 года. Раньше — фермы для майнинга, сегодня — железо для нейросетей.')
-    + section(gallery([('ferma-8-kart-stend', 'Ферма на 8 видеокартах, сборка MiningShop', 'Ферма на 8 видеокартах'),
-                       ('ferma-rgb-podsvetka', 'Ферма на видеокартах на открытой раме', 'Открытая рама под ИИ и майнинг'),
-                       ('sklad-fermy', 'Готовые фермы на складе MiningShop', 'Склад: фермы перед отправкой'),
-                       ('remont-asika', 'Ремонт асика в мастерской MiningShop', 'Мастерская: ремонт и обслуживание')], 4)
-              + '<p style="margin:24px 0 0"><a class="btn btn-line" href="%s">Фермы на видеокартах</a></p>' % u('/catalog/mayning_fermy/'),
-              title='Собираем сами', sub='Живые фото: наши фермы, склад и мастерская в Москве.')
+    + section(gallery([('sotrudnik-ferma', 'Сотрудник MiningShop с собранной фермой на видеокартах', 'Готовая ферма перед тестом'),
+                       ('sborka-fermy-rtx', 'Сборка фермы на видеокартах RTX в мастерской MiningShop', 'Сборка фермы на RTX'),
+                       ('sotrudnik-asik', 'Сотрудник MiningShop с асиком', 'Проверяем каждый асик'),
+                       ('ofis-logo', 'Офис MiningShop в Москве', 'Офис в Москве, шоссе Энтузиастов')], 4)
+              + '<p style="margin:24px 0 0;display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-line" href="%s">Фермы на видеокартах</a>'
+                '<a class="btn btn-line" href="%s">О компании</a></p>' % (u('/catalog/mayning_fermy/'), u('/company/about/')),
+              title='Собираем сами', sub='Живые фото: наша команда, мастерская и офис в Москве.')
     + section(grid([GK[k] for k in TOP]) + '<p style="margin:24px 0 0"><a class="btn btn-line" href="%s">Все видеокарты для ИИ</a></p>'
               % u('/catalog/videokarty/'), title='Популярные видеокарты для ИИ',
               sub='Самые частые запросы: Tesla V100, RTX PRO 6000, RTX 3090. Цена и наличие — на странице модели.')
@@ -200,8 +201,11 @@ add(path='/company/about/', kind='page', title='О компании MiningShop �
                 'а теперь и серверов для ИИ.',
     h1='О компании', lead='С 2017 года продаём, настраиваем и обслуживаем оборудование для майнинга. Теперь — и для вычислений ИИ.',
     crumbs=[('О компании', '/company/about/')],
-    body=section('<div class="prose">'
-                 + h2('История')
+    body=section(gallery([('ofis-logo', 'Офис MiningShop в Москве', 'Офис на шоссе Энтузиастов'),
+                          ('otdel-prodazh', 'Отдел продаж MiningShop', 'Отдел продаж'),
+                          ('komanda', 'Команда MiningShop на общей встрече', 'Команда MiningShop')], 3), cls='sec-soft')
+    + section('<div class="prose">'
+              + h2('История')
                  + p('MiningShop начал работу в мае 2017 года с продажи видеокарт для майнинга. Через несколько месяцев в '
                      'ассортименте появились готовые майнинг-фермы, затем — ASIC-майнеры. За это время мы прошли с клиентами '
                      'несколько циклов рынка: бум 2017-го, крипто-зиму 2018-го, рекордный 2021 год и переход Ethereum на '
@@ -219,7 +223,14 @@ add(path='/company/about/', kind='page', title='О компании MiningShop �
                  + ul(['<b>Сначала расчёт.</b> Показываем экономику на вашем тарифе до покупки.',
                        '<b>Не обещаем доход.</b> Курс и сложность сети не прогнозируются — говорим о рисках прямо.',
                        '<b>Актуальная цена.</b> Не держим на сайте устаревшие цифры — называем цену в момент запроса.'])
-                 + '</div>'))
+                 + '</div>')
+    + section(gallery([('sotrudnik-ferma', 'Сотрудник MiningShop с фермой на видеокартах', 'Собираем фермы сами'),
+                       ('sborka-fermy-rtx', 'Сборка фермы на RTX', 'Сборка и тест под нагрузкой'),
+                       ('sotrudnik-asik', 'Сотрудник MiningShop с асиком', 'Проверка асиков'),
+                       ('punkt-vydachi', 'Пункт выдачи заказов MiningShop', 'Пункт выдачи, кабинет 313'),
+                       ('peregovornaya', 'Переговорная в офисе MiningShop', 'Переговорная для встреч с клиентами'),
+                       ('ofis-zal', 'Рабочий зал офиса MiningShop', 'Рабочий зал')], 3),
+              cls='sec-soft', title='Как мы работаем', sub='Офис, мастерская и пункт выдачи — в Москве, приезжайте.'))
 
 # ================================================================== контакты
 map_link = 'https://yandex.ru/maps/?text=' + 'Москва, шоссе Энтузиастов, 56с20'
@@ -238,6 +249,10 @@ add(path='/contacts/', kind='page', title='Контакты MiningShop: теле
                  '<a href="mailto:%s">%s</a>.</p></div></div>'
                  % (icon('phone'), C['phone_href'], C['phone'], icon('mail'), C['email'], C['email'], icon('tg'), C['tg'], C['tg_name'],
                     icon('calc'), C['hours'], C['address'], map_link, C['email'], C['email']), cls='sec-soft')
+    + section(gallery([('ofis-resepshn', 'Офис MiningShop в Москве', 'Офис: шоссе Энтузиастов, 56, стр. 20'),
+                       ('punkt-vydachi', 'Пункт выдачи заказов MiningShop', 'Пункт выдачи — кабинет 313'),
+                       ('peregovornaya', 'Переговорная MiningShop', 'Переговорная: обсудим проект на месте')], 3),
+              title='Как нас найти', sub='Самовывоз и встречи — по предварительной договорённости.')
     + section(quiz_html(), title='Подбор оборудования'),
     ld=[{"@type": "ContactPage", "name": "Контакты MiningShop", "url": "https://miningshop.ru/contacts/"}])
 

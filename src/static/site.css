@@ -286,7 +286,7 @@ a{color:inherit}
 
 /* ---------- живые фото ---------- */
 .photo{margin:0;border-radius:var(--radius);overflow:hidden;background:var(--dark);box-shadow:var(--shadow)}
-.photo img{width:100%;aspect-ratio:3/2;object-fit:cover}
+.photo img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:center 30%}
 .photo figcaption{padding:10px 14px;font-size:13px;color:#c9d6e5;background:var(--dark)}
 .gallery{display:grid;gap:16px}
 .photo-lead{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:32px;align-items:center}

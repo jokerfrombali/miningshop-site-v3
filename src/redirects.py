@@ -65,8 +65,10 @@ def target(path, known):
     if sec in ('fermy_dlya_mayninga', 'mayning_fermy'):
         if 'tushka' in low:
             return '/catalog/sborki-dlya-ii/platformy/'
-        if re.search(r'3090|3080|3070', low):
-            return '/catalog/sborki-dlya-ii/4x-rtx-3090/'
+        if '3090' in low:
+            return '/catalog/mayning_fermy/na-rtx-3090/'     # 19 тыс. входов в 2021–2022 — на ферму той же карты
+        if re.search(r'3080|3070|3060|_nvidia|p102|p104', low) and 'videokarty_dlya_mayninga' not in low:
+            return '/catalog/mayning_fermy/mayning_fermy_na_nvidia/'
         if 'videokarty_dlya_mayninga' in low:
             return '/blog/cmp-170hx-90hx/'
         return '/catalog/mayning_fermy/'

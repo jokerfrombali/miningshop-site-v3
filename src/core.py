@@ -163,9 +163,10 @@ def toc(items):
 NAV = [
     ('Видеокарты', '/catalog/videokarty/'),
     ('Серверы для ИИ', '/catalog/servery-dlya-ii/'),
+    ('GPU-фермы', '/catalog/mayning_fermy/'),
     ('Сборки', '/catalog/sborki-dlya-ii/'),
     ('Комплектующие', '/catalog/komplektuyushchie/'),
-    ('Выкуп и трейд-ин', '/services/vykup-videokart/'),
+    ('Выкуп', '/services/vykup-videokart/'),
     ('Асики', '/catalog/asic_maynery/'),
     ('Статьи', '/blog/'),
     ('Контакты', '/contacts/'),
@@ -202,8 +203,9 @@ def footer():
             % (C['since'], C['phone_href'], C['phone'], C['email'], C['email'], C['tg'], C['tg_name'], C['address'], C['hours'])
             + col('Каталог', [('Видеокарты для ИИ', '/catalog/videokarty/'), ('Tesla V100', '/catalog/videokarty/tesla-v100/'),
                               ('RTX 3090', '/catalog/videokarty/rtx-3090/'), ('RTX PRO 6000', '/catalog/videokarty/rtx-pro-6000/'),
-                              ('Серверы для ИИ', '/catalog/servery-dlya-ii/'), ('Сборки и тушки', '/catalog/sborki-dlya-ii/'),
-                              ('Комплектующие', '/catalog/komplektuyushchie/'), ('Майнинг-фермы', '/catalog/mayning_fermy/'),
+                              ('Серверы для ИИ', '/catalog/servery-dlya-ii/'), ('GPU-фермы для ИИ', '/catalog/mayning_fermy/ferma-dlya-ii/'),
+                              ('Сборки и тушки', '/catalog/sborki-dlya-ii/'),
+                              ('Комплектующие', '/catalog/komplektuyushchie/'), ('Фермы на видеокартах', '/catalog/mayning_fermy/'),
                               ('ASIC-майнеры', '/catalog/asic_maynery/')])
             + col('Услуги', [('Выкуп видеокарт', '/services/vykup-videokart/'), ('Трейд-ин видеокарт', '/services/trade-in-videokart/'),
                              ('Сборка сервера для ИИ', '/services/sborka-servera-dlya-ii/'), ('Аренда GPU', '/services/arenda-gpu/'),

@@ -11,7 +11,7 @@ from datetime import date
 
 sys.path.insert(0, os.path.dirname(__file__))
 import core
-import pages_asic, pages_ai, pages_parts, pages_table, pages_blog, pages_buyback, pages_aiblog, pages_main  # noqa: F401  (регистрируют страницы)
+import pages_asic, pages_ai, pages_farms, pages_parts, pages_table, pages_blog, pages_buyback, pages_aiblog, pages_main  # noqa: F401  (регистрируют страницы)
 import redirects
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -102,7 +102,9 @@ def main():
            '## Каталог', ln('/catalog/videokarty/', 'Видеокарты для ИИ'), ln('/catalog/servery-dlya-ii/', 'Серверы для ИИ'),
            ln('/catalog/sborki-dlya-ii/', 'Сборки для локального ИИ и платформы без видеокарт'),
            ln('/catalog/komplektuyushchie/', 'Комплектующие: NVLink, SXM2, охлаждение Tesla, райзеры, платы'),
-           ln('/catalog/mayning_fermy/', 'Майнинг-фермы на видеокартах'), ln('/catalog/asic_maynery/', 'ASIC-майнеры'), '',
+           ln('/catalog/mayning_fermy/', 'Фермы на видеокартах для ИИ и майнинга'),
+           ln('/catalog/mayning_fermy/ferma-dlya-ii/', 'GPU-ферма для нейросетей'), ln('/catalog/mayning_fermy/na-rtx-3090/', 'Ферма на RTX 3090'),
+           ln('/catalog/servery-dlya-ii/dlya-llm/', 'Сервер для LLM'), ln('/catalog/servery-dlya-ii/na-8-gpu/', 'Серверы на 8 GPU'), ln('/catalog/asic_maynery/', 'ASIC-майнеры'), '',
            '## Видеокарты'] + [ln(pages_ai.gpu_path(g), g['name'] + ' — ' + g['cls']) for g in pages_ai.G] + ['',
            '## Услуги', ln('/services/vykup-videokart/', 'Выкуп видеокарт'), ln('/services/trade-in-videokart/', 'Трейд-ин видеокарт'),
            ln('/services/sborka-servera-dlya-ii/', 'Сборка сервера для ИИ'), ln('/services/arenda-gpu/', 'Аренда GPU'),

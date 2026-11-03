@@ -9,7 +9,11 @@
 - [Серверы для ИИ](https://miningshop.ru/catalog/servery-dlya-ii/)
 - [Сборки для локального ИИ и платформы без видеокарт](https://miningshop.ru/catalog/sborki-dlya-ii/)
 - [Комплектующие: NVLink, SXM2, охлаждение Tesla, райзеры, платы](https://miningshop.ru/catalog/komplektuyushchie/)
-- [Майнинг-фермы на видеокартах](https://miningshop.ru/catalog/mayning_fermy/)
+- [Фермы на видеокартах для ИИ и майнинга](https://miningshop.ru/catalog/mayning_fermy/)
+- [GPU-ферма для нейросетей](https://miningshop.ru/catalog/mayning_fermy/ferma-dlya-ii/)
+- [Ферма на RTX 3090](https://miningshop.ru/catalog/mayning_fermy/na-rtx-3090/)
+- [Сервер для LLM](https://miningshop.ru/catalog/servery-dlya-ii/dlya-llm/)
+- [Серверы на 8 GPU](https://miningshop.ru/catalog/servery-dlya-ii/na-8-gpu/)
 - [ASIC-майнеры](https://miningshop.ru/catalog/asic_maynery/)
 
 ## Видеокарты
@@ -45,6 +49,7 @@
 
 ## Справочные материалы
 - [Калькулятор видеопамяти для LLM](https://miningshop.ru/calc/vram/)
+- [Ферма или сервер для нейросети: что выбрать](https://miningshop.ru/blog/ferma-ili-server-dlya-ii/)
 - [Какую видеокарту выбрать для ИИ в 2026 году](https://miningshop.ru/blog/videokarta-dlya-ii/)
 - [Сколько видеопамяти нужно для нейросети](https://miningshop.ru/blog/skolko-vram-nuzhno/)
 - [Как запустить нейросеть локально](https://miningshop.ru/blog/lokalnaya-neyroset/)

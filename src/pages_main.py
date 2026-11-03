@@ -67,9 +67,9 @@ home_faq = [
 ]
 
 hero = ('<section class="hero" style="background-image:url(%s)"><div class="wrap">'
-        '<h1>Видеокарты, серверы и сборки <em>для нейросетей</em> — с 2017 года</h1>'
-        '<p class="lead">Tesla V100 и P40, RTX 3090–5090, RTX PRO 6000, A100, H100, H200. Подбираем под вашу модель, собираем '
-        'станции и серверы, выкупаем старые карты в зачёт.</p>'
+        '<h1>Серверы, GPU-фермы и видеокарты <em>для нейросетей</em> — с 2017 года</h1>'
+        '<p class="lead">Серверы для LLM и обучения, фермы на 6–8 видеокарт, Tesla V100 и P40, RTX 3090–5090, RTX PRO 6000, '
+        'A100, H100, H200. Подбираем под вашу модель, собираем, тестируем и выкупаем старые карты в зачёт.</p>'
         '<div class="actions"><a class="btn btn-accent" href="%s">Подобрать под задачу</a>'
         '<a class="btn btn-ghost" href="%s">Сдать видеокарту</a></div>'
         '<div class="stats"><div><b>с 2017</b><span>работаем с видеокартами: начинали с ферм</span></div>'
@@ -83,7 +83,7 @@ home_body = (
         ('chip', 'Видеокарты для ИИ', 'Tesla, RTX, профессиональные и серверные — новые и б/у с проверкой.', '/catalog/videokarty/'),
         ('box', 'Сборки и тушки', 'Станции на 2–4 карты, домашний сервер для ИИ, платформы без карт.', '/catalog/sborki-dlya-ii/'),
         ('server', 'Серверы для ИИ', 'GPU-серверы 4U, Tesla V100 SXM2, HGX H100/H200 и B200/B300.', '/catalog/servery-dlya-ii/'),
-        ('calc', 'Выкуп и трейд-ин', 'Продайте старые карты или засчитайте их в покупку.', '/services/vykup-videokart/'),
+        ('bolt', 'GPU-фермы для ИИ', 'Фермы на 6–8 видеокарт: 144–384 ГБ памяти по самой низкой цене за гигабайт.', '/catalog/mayning_fermy/'),
     ], 4), cls='sec-soft', title='Что мы делаем',
         sub='Магазин видеокарт с 2017 года. Раньше — фермы для майнинга, сегодня — железо для нейросетей.')
     + section(grid([GK[k] for k in TOP]) + '<p style="margin:24px 0 0"><a class="btn btn-line" href="%s">Все видеокарты для ИИ</a></p>'
@@ -108,7 +108,7 @@ home_body = (
         title='Статьи и руководства')
     + section(cards([
         ('chip', 'ASIC-майнеры', 'Antminer S21, Whatsminer и другие — с расчётом окупаемости.', '/catalog/asic_maynery/'),
-        ('bolt', 'Майнинг-фермы', 'Сборка ферм и перевод под нейросети.', '/catalog/mayning_fermy/'),
+        ('bolt', 'Ферма для биткоина', 'Асики, контейнеры, электрика — под ключ.', '/catalog/mayning_fermy/dlya-bitkoina/'),
         ('chart', 'Доходность асиков', 'Калькулятор окупаемости на вашем тарифе.', '/table/'),
     ], 3), title='Майнинг', sub='С майнинга мы начинали — асики, фермы и сервис никуда не делись.')
     + section('<div style="max-width:880px">' + faq_html(home_faq) + '</div>', cls='sec-soft', title='Частые вопросы')
@@ -121,9 +121,9 @@ home_body = (
                  C['address'], C['hours'], u('/contacts/')), title='Контакты')
 )
 add(path='/', kind='home',
-    title='MiningShop — видеокарты, серверы и сборки для нейросетей с 2017 года',
-    description='Видеокарты для ИИ (Tesla V100, P40, RTX 3090, 4090, 5090, RTX PRO 6000, A100, H100, H200), сборки и серверы '
-                'для нейросетей, выкуп и трейд-ин видеокарт. Москва и вся Россия, с 2017 года.',
+    title='MiningShop — серверы для ИИ, GPU-фермы и видеокарты для нейросетей с 2017 года',
+    description='Серверы для ИИ и LLM, GPU-фермы на 6–8 видеокарт, видеокарты для нейросетей (Tesla V100, P40, RTX 3090, '
+                '4090, 5090, RTX PRO 6000, A100, H100, H200), выкуп и трейд-ин. Москва и вся Россия, с 2017 года.',
     h1='', hero=hero, body=home_body,
     ld=[faq_ld(home_faq), {"@type": "WebSite", "name": "MiningShop", "url": "https://miningshop.ru/"},
         {"@type": "Store", "name": "MiningShop", "url": "https://miningshop.ru/", "parentOrganization": {"@id": "https://miningshop.ru/#org"},
@@ -138,10 +138,10 @@ add(path='/catalog/', kind='hub', title='Каталог: видеокарты и
     crumbs=[('Каталог', '/catalog/')],
     body=section(cards([
         ('chip', 'Видеокарты для ИИ', '%d моделей: Tesla, RTX, профессиональные и серверные.' % len(G), '/catalog/videokarty/'),
-        ('server', 'Серверы для ИИ', 'GPU-серверы на 4–8 карт, HGX H100/H200, B200/B300.', '/catalog/servery-dlya-ii/'),
+        ('server', 'Серверы для ИИ', 'Для LLM и обучения, на 8 GPU, RTX 4090/5090/PRO 6000, HGX H100/H200.', '/catalog/servery-dlya-ii/'),
         ('box', 'Сборки и тушки', 'Станции на 2–4 карты, домашние серверы, платформы без карт.', '/catalog/sborki-dlya-ii/'),
         ('fan', 'Комплектующие', 'NVLink, SXM2, охлаждение Tesla, райзеры, платы, БП.', '/catalog/komplektuyushchie/'),
-        ('bolt', 'Майнинг-фермы', 'Сборка ферм и перевод под ИИ.', '/catalog/mayning_fermy/'),
+        ('bolt', 'Фермы на видеокартах', 'GPU-фермы на 6–8 карт для нейросетей и майнинга.', '/catalog/mayning_fermy/'),
         ('chip', 'ASIC-майнеры', '%d моделей: Antminer, Whatsminer, iPollo, Jasminer.' % len(M), '/catalog/asic_maynery/'),
     ], 3), cls='sec-soft'))
 

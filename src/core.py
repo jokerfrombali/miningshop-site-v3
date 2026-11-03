@@ -248,7 +248,7 @@ def crumbs_ld(crumbs):
 def render(pg):
     """pg: path, title, description, body(html) и необязательные h1, lead, crumbs, hero(html), ld(list)."""
     path = pg['path']
-    ld = [ORG_LD] + list(pg.get('ld', []))
+    ld = [ORG_LD] + [x for x in pg.get('ld', []) if not (x.get('@type') == 'Product' and 'offers' not in x)]
     if pg.get('crumbs'):
         ld.append(crumbs_ld(pg['crumbs']))
     ld_json = json.dumps({"@context": "https://schema.org", "@graph": ld}, ensure_ascii=False).replace('<', '\\u003c')
@@ -278,7 +278,9 @@ def render(pg):
         '</head><body>'
         % (esc(pg['title']), esc(pg['description']), robots, PROD + path, esc(pg['title']), esc(pg['description']),
            PROD + path, u('/assets/site.css'), u('/assets/img/ui/favicon.svg'), ld_json, '' if TEMPORARY else METRIKA_JS))
-    return (head + header(path) + '<main>' + top + pg['body'] + '</main>' + footer()
+    mbar = ('<nav class="mbar" aria-label="Связаться"><a href="%s">%sПозвонить</a><a href="%s">%sTelegram</a>'
+            '<a class="go" href="%s">Подобрать</a></nav>' % (C['phone_href'], icon('phone'), C['tg'], icon('tg'), u('/#podbor')))
+    return (head + header(path) + '<main>' + top + pg['body'] + '</main>' + footer() + mbar
             + '<script src="%s" defer></script></body></html>' % u('/assets/site.js'))
 
 

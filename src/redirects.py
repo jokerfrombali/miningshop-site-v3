@@ -31,6 +31,22 @@ ROOT_LANDINGS = {
 }
 
 
+# Близкие модели: старой карточки на новом сайте нет, но есть прямой преемник той же линейки
+ASIC_SUCCESSOR = {'s19': 's19-pro', 'l3': 'l7', 'm30s': 'm30s-plus', 'm31s-plus': 'm30s-plus'}
+
+
+def asic_model(slug):
+    """'bitmain_antminer_s19_pro' и 'antminer-s19-pro-110th' -> 's19-pro'; None, если модель не распознана."""
+    s = slug.lower().replace('_', '-').strip('-')
+    s = re.sub(r'^(bitmain-)?antminer-|^whatsminer-', '', s)
+    s = re.sub(r'-\d+(\.\d+)?(th|gh|mh|ksol)$', '', s)
+    s = s.replace('plus-plus', 'pp')
+    if not re.fullmatch(r'[a-z]{1,2}\d{1,2}[a-z]?(-(pro|xp|plus|pp|hyd|hydro|k-pro|j-pro))*', s):
+        return None
+    s = s.replace('hydro', 'hyd')
+    return ASIC_SUCCESSOR.get(s, s)
+
+
 def target(path, known):
     """Куда вести старый адрес. None — оставить 404, 'GONE' — 410."""
     if path in known:
@@ -56,6 +72,8 @@ def target(path, known):
     if sec == 'videokarty':
         if len(parts) == 2:
             return None
+        if 'videokarty_geforce_rtx_30' in low and len(parts) == 4:
+            return VK + 'rtx-3090/'      # раздел RTX 30: 19 тыс. входов; из серии под ИИ востребована только 3090 24 ГБ
         for pat, dst in GPU_WORDS:
             if re.search(pat, low):
                 return dst
@@ -82,6 +100,11 @@ def target(path, known):
                 return dst
         return KP
     if sec == 'asic_maynery':
+        model = asic_model(parts[-1]) if len(parts) >= 4 else None
+        if model:
+            for k in sorted(known):    # та же модель есть на новом сайте под новым адресом — ведём на карточку, а не на бренд
+                if k.startswith('/catalog/asic_maynery/') and k.count('/') == 5 and asic_model(k.split('/')[-2]) == model:
+                    return k
         for brand in ('bitmain', 'whatsminer', 'ipollo', 'jasminer'):
             if brand in low and '/catalog/asic_maynery/%s/' % brand in known:
                 return '/catalog/asic_maynery/%s/' % brand

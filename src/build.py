@@ -11,7 +11,7 @@ from datetime import date
 
 sys.path.insert(0, os.path.dirname(__file__))
 import core
-import pages_asic, pages_ai, pages_farms, pages_parts, pages_table, pages_blog, pages_buyback, pages_aiblog, pages_main  # noqa: F401  (регистрируют страницы)
+import pages_asic, pages_ai, pages_farms, pages_legacy, pages_parts, pages_table, pages_blog, pages_buyback, pages_aiblog, pages_main  # noqa: F401  (регистрируют страницы)
 import redirects
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

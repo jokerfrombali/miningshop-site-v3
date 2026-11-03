@@ -28,4 +28,5 @@ MS_BASE= MS_TEMP=0 python3 src/build.py       # боевая сборка для
 | `src/pages_parts.py` | Комплектующие: NVLink, SXM2, охлаждение Tesla, райзеры, платы, корпуса, БП, асики |
 | `src/pages_asic.py`, `pages_table.py` | Асики и калькулятор доходности |
 | `src/redirects.py`, `src/data/legacy_urls.txt` | Редиректы с 1 639 адресов старого сайта; итог — `redirects.csv` и `.htaccess` (боевая сборка) |
+| `src/pages_legacy.py`, `src/data/legacy_weight.tsv` | Страницы, возвращённые на старые адреса ради веса; таблица: старый адрес → входы из поиска 2021–22 и 2024–25 → что с ним сейчас (живая страница или 301 куда) |
 | `llms.txt` | Карта сайта для нейросетей |

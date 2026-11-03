@@ -1,0 +1,59 @@
+# Выкладка боевой версии miningshop.ru на хостинг Timeweb.
+# Собирает сайт из src/ (индексируется, Метрика, .htaccess с редиректами) и копирует его на сервер по SSH (rsync).
+# Включается сама, когда в Settings → Secrets and variables → Actions заданы секреты:
+#   TIMEWEB_HOST     — адрес сервера, например vh123.timeweb.ru
+#   TIMEWEB_USER     — логин хостинга (SSH)
+#   TIMEWEB_SSH_KEY  — приватный SSH-ключ, публичная часть добавлена в панели Timeweb
+#   TIMEWEB_PATH     — папка сайта, на виртуальном хостинге Timeweb обычно ~/miningshop.ru/public_html
+# Перед копированием на сервере сохраняется копия текущего сайта в ~/backups/.
+name: Выкладка на Timeweb
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', '.github/workflows/deploy-timeweb.yml']
+  workflow_dispatch:
+
+concurrency: timeweb-deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HOST: ${{ secrets.TIMEWEB_HOST }}
+    steps:
+      - name: Секреты Timeweb заданы?
+        id: check
+        run: |
+          if [ -z "$HOST" ]; then echo "Секреты TIMEWEB_* не заданы — выкладка пропущена"; echo "skip=1" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.skip != '1'
+      - uses: actions/setup-python@v5
+        if: steps.check.outputs.skip != '1'
+        with:
+          python-version: '3.12'
+      - name: Сборка боевой версии
+        if: steps.check.outputs.skip != '1'
+        run: |
+          MS_BASE= MS_TEMP=0 MS_OUT=dist python3 src/build.py
+          rm -f dist/.nojekyll
+      - name: Ключ SSH
+        if: steps.check.outputs.skip != '1'
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.TIMEWEB_SSH_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
+      - name: Копия текущего сайта и выкладка
+        if: steps.check.outputs.skip != '1'
+        env:
+          USER_: ${{ secrets.TIMEWEB_USER }}
+          PATH_: ${{ secrets.TIMEWEB_PATH }}
+        run: |
+          SSH="ssh -i ~/.ssh/id_deploy"
+          $SSH "$USER_@$HOST" "mkdir -p ~/backups && if [ -d $PATH_ ]; then tar czf ~/backups/site-\$(date +%Y%m%d-%H%M%S).tgz -C $PATH_ . ; fi; ls -1t ~/backups/site-*.tgz 2>/dev/null | tail -n +6 | xargs -r rm -f"
+          rsync -az --delete -e "$SSH" dist/ "$USER_@$HOST:$PATH_/"
+      - name: Проверка
+        if: steps.check.outputs.skip != '1'
+        run: |
+          curl -sS -o /dev/null -w "miningshop.ru: %{http_code}\n" https://miningshop.ru/ || true

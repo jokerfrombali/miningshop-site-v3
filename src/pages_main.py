@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Главная, каталог, услуги, консультация и страницы компании."""
 import json, os, re
-from core import (add, u, esc, h2, h3, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a, steps, icon, C, gallery)
+from core import (add, u, esc, h2, h3, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a, steps, icon, C, gallery, trust)
+from pages_buyback import lead_form
 from pages_asic import M, card as asic_card, eff
 from pages_ai import G, GK, gpu_card, grid, size_table
 from pages_buyback import SERVICES_EXTRA
@@ -93,6 +94,9 @@ home_body = (
               + '<p style="margin:24px 0 0;display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-line" href="%s">Фермы на видеокартах</a>'
                 '<a class="btn btn-line" href="%s">О компании</a></p>' % (u('/catalog/mayning_fermy/'), u('/company/about/')),
               title='Собираем сами', sub='Живые фото: наша команда, мастерская и офис в Москве.')
+    + section('<div class="banner banner-yt"><div><h2>Обзоры ферм и железа на YouTube</h2><p>Снимаем обзоры: фермы на RTX, '
+              'асики, комплектующие, сборка под заказ. Смотрите, как мы собираем и тестируем.</p></div>'
+              '<a class="btn" href="%s" target="_blank" rel="noopener">%sСмотреть канал</a></div>' % (C['youtube'], icon('yt')))
     + section(grid([GK[k] for k in TOP]) + '<p style="margin:24px 0 0"><a class="btn btn-line" href="%s">Все видеокарты для ИИ</a></p>'
               % u('/catalog/videokarty/'), title='Популярные видеокарты для ИИ',
               sub='Самые частые запросы: Tesla V100, RTX PRO 6000, RTX 3090. Цена и наличие — на странице модели.')
@@ -131,7 +135,7 @@ add(path='/', kind='home',
     title='MiningShop — серверы для ИИ, GPU-фермы и видеокарты для нейросетей с 2017 года',
     description='Серверы для ИИ и LLM, GPU-фермы на 6–8 видеокарт, видеокарты для нейросетей (Tesla V100, P40, RTX 3090, '
                 '4090, 5090, RTX PRO 6000, A100, H100, H200), выкуп и трейд-ин. Москва и вся Россия, с 2017 года.',
-    h1='', hero=hero, body=home_body,
+    h1='', hero=hero + trust(), body=home_body,
     ld=[faq_ld(home_faq), {"@type": "WebSite", "name": "MiningShop", "url": "https://miningshop.ru/"},
         {"@type": "Store", "name": "MiningShop", "url": "https://miningshop.ru/", "parentOrganization": {"@id": "https://miningshop.ru/#org"},
          "telephone": "+7-800-200-32-64", "address": {"@type": "PostalAddress", "addressCountry": "RU", "addressLocality": "Москва",
@@ -253,6 +257,17 @@ add(path='/contacts/', kind='page', title='Контакты MiningShop: теле
                        ('punkt-vydachi', 'Пункт выдачи заказов MiningShop', 'Пункт выдачи — кабинет 313'),
                        ('peregovornaya', 'Переговорная MiningShop', 'Переговорная: обсудим проект на месте')], 3),
               title='Как нас найти', sub='Самовывоз и встречи — по предварительной договорённости.')
+    + section('<div class="grid g2"><div class="prose">' + h2('Заказать звонок', 'zvonok')
+              + p('Оставьте телефон и коротко — что нужно. Перезвоним в рабочее время, обычно в течение часа.')
+              + ul(['Подбор сервера, фермы или видеокарт под задачу.', 'Оценка карт для выкупа и трейд-ина.',
+                    'Размещение оборудования в дата-центре.']) + '</div>'
+              + lead_form('Заказать звонок', [('name', 'Имя', 'text', 'как к вам обращаться'),
+                                              ('phone', 'Телефон', 'tel', '+7'),
+                                              ('topic', 'Тема', 'select', ['Сервер для ИИ', 'Ферма на видеокартах', 'Видеокарты',
+                                                                          'Выкуп или трейд-ин', 'Асики', 'Другое']),
+                                              ('comment', 'Комментарий', 'textarea', 'модель, количество, бюджет')],
+                          'Заявка уйдёт менеджеру в Telegram или на почту — выберите, как удобнее.') + '</div>',
+              anchor='zvonok-form')
     + section(quiz_html(), title='Подбор оборудования'),
     ld=[{"@type": "ContactPage", "name": "Контакты MiningShop", "url": "https://miningshop.ru/contacts/"}])
 

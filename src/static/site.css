@@ -303,3 +303,96 @@ a{color:inherit}
 .sitemap a{color:var(--blue);text-decoration:none}
 .sitemap a:hover{text-decoration:underline}
 @media (max-width:520px){.logo small{display:none}.logo img{height:28px}.hdr .wrap{gap:12px}}
+
+/* ================= v4: что взято из старых версий ================= */
+/* верхняя служебная строка — как на OpenCart 2017 и Битриксе: компания слева, YouTube и Telegram справа */
+.topbar{background:var(--dark);color:#c9d6e5;font-size:13px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:36px}
+.topbar nav{display:flex;gap:18px;flex-wrap:wrap}
+.topbar a{color:#c9d6e5;text-decoration:none}
+.topbar a:hover{color:#fff}
+.topbar-r{display:flex;gap:8px}
+.topbar-r a{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:4px;color:#fff;font-weight:500}
+.topbar-r svg{width:16px;height:16px}
+.topbar-r .yt{background:#e5133f}.topbar-r .tgc{background:#229ed9}
+/* шапка в две строки: логотип, каталог, поиск, телефон — и разделы под ними */
+.hdr .wrap{gap:18px;min-height:76px}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--blue-hover)}
+.mega-btn svg{width:18px;height:18px}
+.search{position:relative;flex:1;min-width:0}
+.search input{width:100%;height:42px;border:1px solid var(--line);border-radius:6px;padding:0 40px 0 14px;font:15px var(--font);background:var(--bg-soft);color:var(--text)}
+.search input:focus{outline:2px solid var(--blue);outline-offset:0;background:#fff}
+.search>svg{position:absolute;right:12px;top:11px;width:20px;height:20px;color:var(--muted);pointer-events:none}
+.search-res{position:absolute;left:0;right:0;top:46px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 30px rgba(10,35,66,.16);z-index:70;overflow:hidden}
+.search-res a{display:block;padding:10px 14px;text-decoration:none;color:var(--text);border-top:1px solid var(--line);font-size:15px}
+.search-res a:first-child{border-top:0}
+.search-res a:hover,.search-res a:focus{background:var(--blue-soft);color:var(--blue)}
+.search-res .none{padding:12px 14px;color:var(--muted);font-size:14px}
+.hdr-nav{border-top:1px solid var(--line)}
+.hdr-nav .wrap{min-height:50px}
+.hdr-nav .nav{flex:1;justify-content:space-between}
+.hdr-nav .nav a{font-weight:700;font-size:15px;padding:14px 0}
+.mega{position:absolute;left:0;right:0;top:76px;background:#fff;border-top:1px solid var(--line);box-shadow:0 18px 40px rgba(10,35,66,.18);z-index:65}
+.mega .wrap{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:24px;padding-block:26px 30px;min-height:0;align-items:start}
+.mega-col{display:flex;flex-direction:column;gap:7px}
+.mega-col a{text-decoration:none;color:var(--muted);font-size:14px}
+.mega-col a:hover{color:var(--blue)}
+.mega-col .mega-h{font:700 15px var(--font-head);text-transform:uppercase;color:var(--dark);margin-bottom:4px}
+@media (min-width:1181px){.hdr-cta{display:inline-flex!important}.hdr-contact{display:block!important}}
+@media (max-width:1380px){.logo small{display:none}}
+@media (max-width:1180px){
+  .topbar{display:none}
+  .hdr .wrap{flex-wrap:wrap;gap:10px 12px;min-height:64px;padding-block:10px}
+  .search{order:5;flex-basis:100%}
+  .mega-btn{margin-left:auto}
+  .burger{margin-left:0}
+  .hdr-nav{border:0}.hdr-nav .wrap{min-height:0;padding:0}
+  .nav{top:100%}
+  .mega{top:100%}.mega .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* полоса доверия под первым экраном — как на главной Битрикса, только то, что правда сейчас */
+.trust{background:#fff;border-bottom:1px solid var(--line)}
+.trust .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;padding-block:20px}
+.trust div{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:12px;align-items:center}
+.trust .ico{width:44px;height:44px;margin:0;grid-row:span 2}
+.trust .ico svg{width:24px;height:24px}
+.trust b{font-size:15px;line-height:1.2}
+.trust small{color:var(--muted);font-size:13px;line-height:1.3}
+@media (max-width:900px){.trust .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.trust .wrap{grid-template-columns:minmax(0,1fr)}}
+/* метки на карточках — как «ХИТ / ЕСТЬ ОБЗОР» на Битриксе */
+.prod-img{position:relative}
+.badge-hit{position:absolute;left:12px;top:12px;background:var(--accent-grad);color:#fff;font:700 11px var(--font);letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;border-radius:4px}
+/* плитки характеристик — как на карточках асиков сайта на Next.js */
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:16px 0}
+.tiles div{background:var(--bg-soft);border-radius:8px;padding:12px 10px;text-align:center}
+.tiles b{display:block;font:700 17px/1.2 var(--font-head);color:var(--dark)}
+.tiles span{font-size:12px;color:var(--muted)}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* конфигуратор фермы — как выбор «4 / 6 / 8 / 12 карт» на Битриксе */
+.cfg{margin:8px 0 32px;border:2px solid var(--blue-soft)}
+.cfg h3{margin:0 0 14px}
+.cfg-row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:0 0 12px}
+.cfg-row>span{font-weight:700;font-size:14px;min-width:120px}
+.opts-inline{display:flex;flex-wrap:wrap;gap:8px}
+.opts-inline .chip{font-size:14px;padding:8px 14px}
+.opts-inline .chip[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.cfg-out{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.cfg-out div{background:var(--dark);color:#fff;border-radius:8px;padding:14px}
+.cfg-out b{display:block;font:700 26px/1.1 var(--font-head);color:var(--accent-on-dark)}
+.cfg-out small{color:#c9d6e5;font-size:13px}
+.cfg-fit{list-style:none;margin:0 0 16px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px;font-size:15px}
+.cfg-fit .ok{color:var(--ok);font-weight:500}.cfg-fit .no{color:var(--muted)}
+.cfg-note{font-size:13px;color:var(--muted);margin:12px 0 0}
+@media (max-width:600px){.cfg-out{grid-template-columns:minmax(0,1fr)}.cfg-fit{grid-template-columns:minmax(0,1fr)}}
+/* баннер YouTube-канала */
+.banner-yt{background:linear-gradient(120deg,var(--dark),var(--dark-2));color:#fff}
+.banner-yt p{color:#c9d6e5}
+.banner-yt .btn{background:#e5133f;color:#fff;gap:8px}
+.banner-yt .btn svg{width:20px;height:20px}
+.prose a.btn{text-decoration:none}
+.prose a.btn-accent,.prose a.btn-accent:hover{color:var(--accent-ink)}
+.prose a.btn-line{color:var(--dark)}
+.prose a.btn-line:hover{color:#fff}
+h2[id],section[id]{scroll-margin-top:150px}

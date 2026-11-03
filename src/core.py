@@ -25,6 +25,8 @@ C = {
     'phone': '8 (800) 200-32-64', 'phone_href': 'tel:+78002003264', 'phone_note': 'Бесплатно по России',
     'email': 'info@miningshop.ru',
     'tg': 'https://t.me/miningshop', 'tg_name': '@miningshop',
+    'youtube': 'https://www.youtube.com/channel/UCZuNz7CLAENZIeyAooKW0oQ',   # канал со старого сайта
+    'tg_channel': 'https://t.me/miningshop_official',
     'address': 'г. Москва, шоссе Энтузиастов, 56, стр. 20',
     'hours': 'Пн–Пт 10:00–19:00',
     'hours_short': 'Пн–Пт 10–19',
@@ -62,6 +64,8 @@ ICONS = {
     'chart': '<path d="M4 20V10h3v10zm6 0V4h3v16zm6 0v-7h3v7zM3 21h18v1H3z"/>',
     'burger': '<path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/>',
     'snow': '<path d="M11 2h2v4.3l2.3-2.3 1.4 1.4L13 9.1V11h1.9l3.7-3.7 1.4 1.4L17.7 11H22v2h-4.3l2.3 2.3-1.4 1.4L14.9 13H13v1.9l3.7 3.7-1.4 1.4-2.3-2.3V22h-2v-4.3L8.7 20l-1.4-1.4L11 14.9V13H9.1l-3.7 3.7L4 15.3 6.3 13H2v-2h4.3L4 8.7l1.4-1.4L9.1 11H11V9.1L7.3 5.4 8.7 4 11 6.3z"/>',
+    'yt': '<path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8c1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3z"/>',
+    'search': '<path d="M10.5 3a7.5 7.5 0 0 1 6 12l4.8 4.8-1.5 1.5-4.8-4.8A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/>',
 }
 
 
@@ -159,6 +163,15 @@ def toc(items):
         '<a href="#%s">%s</a>' % (anc, t) for t, anc in items)
 
 
+def trust():
+    items = [('shield', 'Тест 24 часа', 'каждую сборку гоняем под нагрузкой и даём отчёт'),
+             ('wrench', 'Гарантия на сборку', 'и консультации после покупки'),
+             ('truck', 'Доставка по России', 'транспортными компаниями или самовывоз в Москве'),
+             ('calc', 'Выкуп и трейд-ин', 'старые карты — в зачёт новой покупки')]
+    return ('<div class="trust"><div class="wrap">%s</div></div>'
+            % ''.join('<div><span class="ico">%s</span><b>%s</b><small>%s</small></div>' % (icon(i), t, d) for i, t, d in items))
+
+
 # ------------------------------------------------------------------ живые фото (свои снимки старого сайта, src/static/img/photos)
 def photo(name, alt, cap='', eager=False):
     src = u('/assets/img/photos/%s.webp' % name)
@@ -186,24 +199,59 @@ NAV = [
 ]
 
 
+# мега-меню «Каталог»: как на старом сайте на Битриксе — все разделы сразу, с подразделами
+MEGA = [
+    ('Серверы для ИИ', '/catalog/servery-dlya-ii/', [('Сервер для LLM', '/catalog/servery-dlya-ii/dlya-llm/'),
+        ('Для обучения нейросетей', '/catalog/servery-dlya-ii/dlya-obucheniya/'), ('На 8 GPU', '/catalog/servery-dlya-ii/na-8-gpu/'),
+        ('На RTX 4090', '/catalog/servery-dlya-ii/na-rtx-4090/'), ('На RTX PRO 6000', '/catalog/servery-dlya-ii/na-rtx-pro-6000/'),
+        ('HGX H100 и H200', '/catalog/servery-dlya-ii/hgx-h100-h200/')]),
+    ('Фермы на видеокартах', '/catalog/mayning_fermy/', [('GPU-ферма для нейросетей', '/catalog/mayning_fermy/ferma-dlya-ii/'),
+        ('Ферма на RTX 3090', '/catalog/mayning_fermy/na-rtx-3090/'), ('Фермы на NVIDIA', '/catalog/mayning_fermy/mayning_fermy_na_nvidia/'),
+        ('Ферма для биткоина', '/catalog/mayning_fermy/dlya-bitkoina/'), ('Тушки без видеокарт', '/catalog/sborki-dlya-ii/platformy/')]),
+    ('Видеокарты для ИИ', '/catalog/videokarty/', [('NVIDIA Tesla', '/catalog/videokarty/nvidia-tesla/'),
+        ('RTX 3090', '/catalog/videokarty/rtx-3090/'), ('RTX 4090 48 ГБ', '/catalog/videokarty/rtx-4090-48gb/'),
+        ('RTX 5090', '/catalog/videokarty/rtx-5090/'), ('RTX PRO 6000', '/catalog/videokarty/rtx-pro-6000/'),
+        ('Серверные A100, H100, H200', '/catalog/videokarty/servernye/')]),
+    ('Сборки и станции', '/catalog/sborki-dlya-ii/', [('Станция на 2 × RTX 3090', '/catalog/sborki-dlya-ii/2x-rtx-3090/'),
+        ('Сервер на 4 × RTX 3090', '/catalog/sborki-dlya-ii/4x-rtx-3090/'), ('Домашний сервер для ИИ', '/catalog/sborki-dlya-ii/domashniy-server/'),
+        ('NVIDIA DGX Spark', '/catalog/sborki-dlya-ii/nvidia-dgx-spark/')]),
+    ('Комплектующие', '/catalog/komplektuyushchie/', [('Блоки питания', '/catalog/komplektuyushchie/bloki_pitaniya/'),
+        ('Райзеры', '/catalog/komplektuyushchie/rayzery/'), ('Каркасы и корпуса', '/catalog/komplektuyushchie/korpusa_i_karkasy/'),
+        ('Охлаждение Tesla', '/catalog/komplektuyushchie/okhlazhdenie-tesla/'), ('NVLink', '/catalog/komplektuyushchie/nvlink/')]),
+    ('Асики и услуги', '/catalog/asic_maynery/', [('ASIC-майнеры', '/catalog/asic_maynery/'), ('Выкуп видеокарт', '/services/vykup-videokart/'),
+        ('Трейд-ин', '/services/trade-in-videokart/'), ('Аренда GPU', '/services/arenda-gpu/'), ('Размещение в ЦОД', '/services/gpu-hosting/')]),
+]
+
+
 def header(path):
     # подсвечиваем один пункт — с самым длинным совпадающим префиксом
     cur = max((h for _, h in NAV if path.startswith(h)), key=len, default=None)
     nav = ''.join('<a href="%s"%s>%s</a>' % (u(h), ' aria-current="page"' if h == cur else '', t) for t, h in NAV)
     temp = ('<div class="temp-bar">Временная версия нового сайта MiningShop. Каталог и цены уточняйте у менеджера.</div>'
             if TEMPORARY else '')
-    return (temp +
+    mega = ''.join('<div class="mega-col"><a class="mega-h" href="%s">%s</a>%s</div>'
+                   % (u(h), t, ''.join('<a href="%s">%s</a>' % (u(sh), st) for st, sh in sub)) for t, h, sub in MEGA)
+    top = ('<div class="topbar"><div class="wrap"><nav aria-label="Компания">'
+           '<a href="%s">О компании</a><a href="%s">Доставка и оплата</a><a href="%s">Гарантия</a><a href="%s">Статьи</a><a href="%s">Контакты</a></nav>'
+           '<div class="topbar-r"><a class="yt" href="%s" target="_blank" rel="noopener">%sYouTube-канал</a>'
+           '<a class="tgc" href="%s" target="_blank" rel="noopener">%sКанал в Telegram</a></div></div></div>'
+           % (u('/company/about/'), u('/company/delivery/'), u('/company/guarantee/'), u('/blog/'), u('/contacts/'),
+              C['youtube'], icon('yt'), C['tg_channel'], icon('tg')))
+    return (temp + top +
             '<header class="hdr"><div class="wrap">'
             '<a class="logo" href="%s" aria-label="MiningShop — на главную"><img src="%s" srcset="%s 2x" alt="MiningShop" width="175" height="34">'
-            '<small>видеокарты, серверы и сборки для ИИ</small></a>'
-            '<nav class="nav" id="nav">%s</nav>'
-            '<div class="hdr-contact"><a href="%s">%s</a><small>%s</small></div>'
-            '<div class="hdr-icons"><a href="%s" aria-label="Написать в Telegram">%s</a><a href="mailto:%s" aria-label="Написать на почту">%s</a></div>'
-            '<a class="btn btn-accent btn-sm hdr-cta" href="%s">Подобрать</a>'
+            '<small>серверы, GPU-фермы и видеокарты для ИИ</small></a>'
+            '<button class="btn btn-blue btn-sm mega-btn" type="button" aria-expanded="false" aria-controls="mega">%sКаталог</button>'
+            '<form class="search" role="search" onsubmit="return false"><label class="sr" for="q">Поиск по сайту</label>'
+            '<input id="q" type="search" placeholder="Поиск: RTX 3090, сервер для LLM, ферма…" autocomplete="off">'
+            '%s<div class="search-res" hidden></div></form>'
+            '<div class="hdr-contact"><a href="%s">%s</a><small>%s, бесплатно по России</small></div>'
+            '<a class="btn btn-accent btn-sm hdr-cta" href="%s">Заказать звонок</a>'
             '<button class="burger" aria-controls="nav" aria-expanded="false" aria-label="Меню">%s</button>'
-            '</div></header>'
-            % (u('/'), u('/assets/img/ui/logo.webp'), u('/assets/img/ui/logo@2x.webp'), nav, C['phone_href'], C['phone'], C['hours'],
-               C['tg'], icon('tg'), C['email'], icon('mail'), u('/#podbor'), icon('burger')))
+            '</div><div class="mega" id="mega" hidden><div class="wrap">%s</div></div>'
+            '<div class="hdr-nav"><div class="wrap"><nav class="nav" id="nav">%s</nav></div></div></header>'
+            % (u('/'), u('/assets/img/ui/logo.webp'), u('/assets/img/ui/logo@2x.webp'), icon('burger'), icon('search'),
+               C['phone_href'], C['phone'], C['hours'], u('/contacts/#zvonok'), icon('burger'), mega, nav))
 
 
 def footer():
@@ -299,6 +347,7 @@ def render(pg):
            PROD + path, u('/assets/site.css'), u('/assets/img/ui/favicon.png'), u('/assets/img/ui/apple-touch-icon.png'), ld_json, '' if TEMPORARY else METRIKA_JS))
     mbar = ('<nav class="mbar" aria-label="Связаться"><a href="%s">%sПозвонить</a><a href="%s">%sTelegram</a>'
             '<a class="go" href="%s">Подобрать</a></nav>' % (C['phone_href'], icon('phone'), C['tg'], icon('tg'), u('/#podbor')))
+    head = head.replace('</head>', '<meta name="ms-base" content="%s"></head>' % BASE, 1)
     return (head + header(path) + '<main>' + top + pg['body'] + '</main>' + footer() + mbar
             + '<script src="%s" defer></script></body></html>' % u('/assets/site.js'))
 

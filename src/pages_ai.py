@@ -17,6 +17,7 @@ SRV = '/catalog/servery-dlya-ii/'
 BLD = '/catalog/sborki-dlya-ii/'
 BUYBACK = '/services/vykup-videokart/'
 FARM = '/catalog/mayning_fermy/'
+HITS = {'tesla-v100', 'rtx-pro-6000', 'rtx-3090', 'tesla-p40', 'rtx-5090'}   # самые частые запросы Вордстата
 GPU_PHOTO = {'rtx-3090': '/assets/img/photos/palit-rtx-3090.webp'}   # живые фото карт со старого сайта
 
 # ------------------------------------------------------------------ цены
@@ -250,12 +251,13 @@ def price_line(g):
 
 def gpu_card(g):
     mem = g['rows'][0][1] if len(g['rows']) == 1 else ', '.join('%d' % x for x in g['gb']) + ' ГБ'
-    return ('<article class="prod" data-tags="%s"><div class="prod-img"><img src="%s" alt="%s" loading="lazy"></div>'
+    hit = '<span class="badge-hit">Хит спроса</span>' if g['key'] in HITS else ''
+    return ('<article class="prod" data-tags="%s"><div class="prod-img">%s<img src="%s" alt="%s" loading="lazy"></div>'
             '<div class="prod-body"><div class="tags"><span class="tag tag-accent">%s</span><span class="tag">%s</span></div>'
             '<h3><a href="%s">%s</a></h3>'
             '<div class="specs-mini"><span>Память</span><b>%s</b><span>Цена</span><b>%s</b></div>'
             '<a class="btn btn-line" href="%s">Подробнее</a></div></article>'
-            % (g['fam'], u(GPU_PHOTO.get(g['key'], '/assets/img/ui/gpu.svg')), esc(g['name']), g['tag'], FAM[g['fam']], u(gpu_path(g)), g['short'],
+            % (g['fam'], hit, u(GPU_PHOTO.get(g['key'], '/assets/img/ui/gpu.svg')), esc(g['name']), g['tag'], FAM[g['fam']], u(gpu_path(g)), g['short'],
                mem, price_line(g), u(gpu_path(g))))
 
 
@@ -424,6 +426,14 @@ GPU_LINKS = {
 }
 
 
+def spec_tiles(g):
+    """Плитки ключевых характеристик над ценой — как на карточках асиков текущего сайта."""
+    r = g['rows'][0]
+    mem = ', '.join('%d' % x for x in g['gb']) + ' ГБ'
+    items = [('Видеопамять', mem), ('Тип памяти', r[2]), ('Скорость памяти', r[3]), ('TDP', r[4])]
+    return '<div class="tiles">%s</div>' % ''.join('<div><b>%s</b><span>%s</span></div>' % (v, k) for k, v in items)
+
+
 # ------------------------------------------------------------------ страница модели
 def gpu_page(g):
     if len(g['rows']) == 1:
@@ -449,11 +459,11 @@ def gpu_page(g):
     others = [x for x in G if x is not g and x['fam'] == g['fam']][:4] or [x for x in G if x is not g][:4]
     body = (section('<div class="pd"><div class="pd-gallery"><div class="main"><img src="%s" alt="%s" style="object-fit:contain;max-height:100%%"></div></div>'
                     '<div class="pd-info"><div class="tags"><span class="tag tag-accent">%s</span><span class="tag">%s</span></div>'
-                    '<h1>%s</h1><p>%s.</p><div class="pd-price">%s<small>Новые и б/у с проверкой. Цена фиксируется в счёте</small></div>'
+                    '<h1>%s</h1><p>%s.</p>%s<div class="pd-price">%s<small>Новые и б/у с проверкой. Цена фиксируется в счёте</small></div>'
                     '<div class="pd-actions"><a class="btn btn-accent" href="%s">Узнать цену и наличие</a>'
                     '<a class="btn btn-line" href="%s">Сдать карту в зачёт</a></div></div></div>'
                     % (u(GPU_PHOTO.get(g['key'], '/assets/img/ui/gpu.svg')), esc(g['name']), g['tag'], FAM[g['fam']], g['name'],
-                       g['cls'][0].upper() + g['cls'][1:], price_line(g), u('/#podbor'), u(BUYBACK)), cls='sec-soft')
+                       g['cls'][0].upper() + g['cls'][1:], spec_tiles(g), price_line(g), u('/#podbor'), u(BUYBACK)), cls='sec-soft')
             + section('<div class="layout"><div class="prose">'
                       + h2('Варианты и цены', 'ceny') + ptable(['Вариант', 'Наличие', 'Цена'], vrows)
                       + h2('Характеристики', 'harakteristiki') + spec

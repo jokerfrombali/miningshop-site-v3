@@ -15,7 +15,7 @@ import pages_asic, pages_ai, pages_farms, pages_legacy, pages_parts, pages_table
 import redirects
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = ROOT   # GitHub Pages раздаёт этот репозиторий из корня ветки main
+OUT = os.environ.get('MS_OUT') or ROOT   # GitHub Pages раздаёт этот репозиторий из корня ветки main; MS_OUT — собрать в другую папку
 KEEP = {'.git', '.gitignore', 'src', 'README.md'}   # всё остальное в корне — результат сборки
 
 # ------------------------------------------------------------------ графика без внешних файлов
@@ -95,10 +95,12 @@ def make_sitemap_page():
 
 
 def main():
+    os.makedirs(OUT, exist_ok=True)
     for name in os.listdir(OUT):
-        if name not in KEEP:
-            full = os.path.join(OUT, name)
-            shutil.rmtree(full) if os.path.isdir(full) else os.remove(full)
+        if OUT == ROOT and name in KEEP:
+            continue
+        full = os.path.join(OUT, name)
+        shutil.rmtree(full) if os.path.isdir(full) else os.remove(full)
     shutil.copytree(os.path.join(ROOT, 'src', 'static'), os.path.join(OUT, 'assets'))
     ui = 'assets/img/ui/'
     write(ui + 'asic-air.svg', ASIC_SVG % (FANS, 'ASIC-майнер, воздушное охлаждение'))
@@ -114,6 +116,12 @@ def main():
         write(out, core.render(pg))
     # GitHub Pages показывает 404.html для несуществующих адресов
     shutil.copyfile(os.path.join(OUT, '404', 'index.html'), os.path.join(OUT, '404.html'))
+
+    # индекс для поиска в шапке: название страницы и адрес, без внешних сервисов
+    import json
+    idx = [[re.sub(r'<[^>]+>', '', pg.get('h1') or pg['title'].split(' — ')[0]), core.u(pg['path'])]
+           for pg in core.PAGES if pg.get('kind') != 'system' and pg['path'] != '/']
+    write('assets/search.json', json.dumps(idx, ensure_ascii=False))
 
     today = date.today().isoformat()
     urls = [pg['path'] for pg in core.PAGES if pg.get('kind') != 'system']

@@ -11,13 +11,38 @@
 - Подразделы /catalog/mayning_fermy/mayning_fermy_na_nvidia/ (1 393 входа) возвращаются по старому адресу.
 - «законна ли майнинг ферма в россии» и близкие ≈ 300 в месяц — отдельная статья.
 """
-from core import (add, u, h2, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a, photo, gallery)
+from core import (add, u, h2, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a, photo, gallery, C)
 from pages_ai import VK, SRV, BLD, BUYBACK, FARM, size_table
 from pages_blog import article
 
 ASIC = '/catalog/asic_maynery/'
 KP = '/catalog/komplektuyushchie/'
 CR = [('Каталог', '/catalog/'), ('Фермы на видеокартах', FARM)]
+
+
+import json
+
+# карты для конфигуратора: память, ГБ и паспортный TDP, Вт
+CFG_CARDS = [('rtx-3090', 'RTX 3090 24 ГБ', 24, 350), ('rtx-4090-48', 'RTX 4090 48 ГБ', 48, 450),
+             ('rtx-5090', 'RTX 5090 32 ГБ', 32, 575), ('tesla-p40', 'Tesla P40 24 ГБ', 24, 250),
+             ('rtx-a6000', 'RTX A6000 48 ГБ', 48, 300)]
+
+
+def configurator(default='rtx-3090'):
+    """Выбор карты и их числа — как выбор «4 / 6 / 8 / 12 карт» на карточках ферм старого сайта, но с расчётом под ИИ."""
+    data = json.dumps({'cards': [dict(k=k, n=n, gb=gb, w=w) for k, n, gb, w in CFG_CARDS], 'def': default}, ensure_ascii=False)
+    return ('<div class="cfg card" data-config=\'%s\'><h3>Соберите ферму</h3>'
+            '<div class="cfg-row"><span>Видеокарта</span><div class="opts-inline" data-cfg-card></div></div>'
+            '<div class="cfg-row"><span>Сколько карт</span><div class="opts-inline" data-cfg-n></div></div>'
+            '<div class="cfg-out" aria-live="polite"><div><b data-o="vram"></b><small>видеопамяти</small></div>'
+            '<div><b data-o="power"></b><small>потребление под нагрузкой</small></div>'
+            '<div><b data-o="psu"></b><small>блоки питания с запасом</small></div></div>'
+            '<ul class="cfg-fit" data-o="fit"></ul>'
+            '<div class="pd-actions"><a class="btn btn-accent" data-o="tg" href="%s" target="_blank" rel="noopener">Узнать цену этой фермы</a>'
+            '<a class="btn btn-line" href="%s">Позвонить %s</a></div>'
+            '<p class="cfg-note">Оценка по паспортному TDP карт плюс 400 Вт на платформу. Модели — для инференса в 4–8 битах '
+            'с контекстом до 8 тыс. токенов.</p></div>'
+            % (data.replace("'", '&#39;'), C['tg'], C['phone_href'], C['phone']))
 
 
 def farm_table(rows):
@@ -135,6 +160,7 @@ add(path=FARM + 'ferma-dlya-ii/', kind='catalog',
     body=section('<div class="layout"><div class="prose">'
                  + photo('ferma-rgb-podsvetka', 'GPU-ферма на открытой раме', 'Открытая рама: каждая карта на виду, обдув со всех сторон', eager=True)
                  + h2('Конфигурации', 'konfig') + farm_table(AI_FARMS)
+                 + configurator('rtx-3090')
                  + h2('Из чего состоит ферма под ИИ', 'sostav')
                  + ul(['<b>Плата и процессор:</b> AMD EPYC или Threadripper PRO на 64–128 линий PCIe — каждой карте x8–x16, а не x1.',
                        '<b>Оперативная память:</b> 128–512 ГБ — модель сначала читается в ОЗУ, данные готовятся на процессоре.',
@@ -224,7 +250,7 @@ add(path=FARM + 'na-rtx-3090/', kind='product',
     crumbs=CR + [('На RTX 3090', FARM + 'na-rtx-3090/')],
     body=section('<div class="layout"><div class="prose">'
                  + photo('ferma-rtx-3090', 'Ферма на видеокартах RTX 3090', 'Ферма на RTX 3090 — наша сборка', eager=True)
-                 + h2('Конфигурации', 'konfig') + farm_table(r3_rows)
+                 + h2('Конфигурации', 'konfig') + farm_table(r3_rows) + configurator('rtx-3090')
                  + h2('Состав', 'sostav')
                  + ul(['4–8 × ' + a(VK + 'rtx-3090/', 'RTX 3090 24 ГБ') + ', новые или б/у с проверкой.',
                        'Плата на AMD EPYC с 7 слотами PCIe 4.0 x16 или бифуркацией, 128–256 ГБ ОЗУ.',

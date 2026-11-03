@@ -227,8 +227,7 @@ def header(path):
     # подсвечиваем один пункт — с самым длинным совпадающим префиксом
     cur = max((h for _, h in NAV if path.startswith(h)), key=len, default=None)
     nav = ''.join('<a href="%s"%s>%s</a>' % (u(h), ' aria-current="page"' if h == cur else '', t) for t, h in NAV)
-    temp = ('<div class="temp-bar">Временная версия нового сайта MiningShop. Каталог и цены уточняйте у менеджера.</div>'
-            if TEMPORARY else '')
+    temp = ''   # плашку «Временная версия» убрали по просьбе владельца; черновик закрыт от индексации noindex и robots.txt
     mega = ''.join('<div class="mega-col"><a class="mega-h" href="%s">%s</a>%s</div>'
                    % (u(h), t, ''.join('<a href="%s">%s</a>' % (u(sh), st) for st, sh in sub)) for t, h, sub in MEGA)
     top = ('<div class="topbar"><div class="wrap"><nav aria-label="Компания">'

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Главная, каталог, услуги, консультация и страницы компании."""
 import json, os, re
-from core import (add, u, esc, h2, h3, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a, steps, icon, C)
+from core import (add, u, esc, h2, h3, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a, steps, icon, C, gallery)
 from pages_asic import M, card as asic_card, eff
 from pages_ai import G, GK, gpu_card, grid, size_table
 from pages_buyback import SERVICES_EXTRA
@@ -86,6 +86,12 @@ home_body = (
         ('bolt', 'GPU-фермы для ИИ', 'Фермы на 6–8 видеокарт: 144–384 ГБ памяти по самой низкой цене за гигабайт.', '/catalog/mayning_fermy/'),
     ], 4), cls='sec-soft', title='Что мы делаем',
         sub='Магазин видеокарт с 2017 года. Раньше — фермы для майнинга, сегодня — железо для нейросетей.')
+    + section(gallery([('ferma-8-kart-stend', 'Ферма на 8 видеокартах, сборка MiningShop', 'Ферма на 8 видеокартах'),
+                       ('ferma-rgb-podsvetka', 'Ферма на видеокартах на открытой раме', 'Открытая рама под ИИ и майнинг'),
+                       ('sklad-fermy', 'Готовые фермы на складе MiningShop', 'Склад: фермы перед отправкой'),
+                       ('remont-asika', 'Ремонт асика в мастерской MiningShop', 'Мастерская: ремонт и обслуживание')], 4)
+              + '<p style="margin:24px 0 0"><a class="btn btn-line" href="%s">Фермы на видеокартах</a></p>' % u('/catalog/mayning_fermy/'),
+              title='Собираем сами', sub='Живые фото: наши фермы, склад и мастерская в Москве.')
     + section(grid([GK[k] for k in TOP]) + '<p style="margin:24px 0 0"><a class="btn btn-line" href="%s">Все видеокарты для ИИ</a></p>'
               % u('/catalog/videokarty/'), title='Популярные видеокарты для ИИ',
               sub='Самые частые запросы: Tesla V100, RTX PRO 6000, RTX 3090. Цена и наличие — на странице модели.')

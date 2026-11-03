@@ -21,22 +21,22 @@ KEEP = {'.git', '.gitignore', 'src', 'README.md'}   # всё остальное 
 # ------------------------------------------------------------------ графика без внешних файлов
 ASIC_SVG = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#f6f7f9"/>
 <g transform="translate(70 70)"><rect width="260" height="160" rx="10" fill="#26313a"/><rect x="10" y="12" width="240" height="136" rx="6" fill="#1a232b"/>
-%s<rect x="18" y="138" width="60" height="6" rx="3" fill="#fab432"/></g>
+%s<rect x="18" y="138" width="60" height="6" rx="3" fill="#e5133f"/></g>
 <text x="200" y="272" font-family="Roboto,Arial" font-size="15" fill="#66717c" text-anchor="middle">%s</text></svg>'''
 FANS = '<circle cx="70" cy="80" r="48" fill="#11171c" stroke="#3a4650" stroke-width="3"/><circle cx="70" cy="80" r="10" fill="#3a4650"/>' \
        '<circle cx="190" cy="80" r="48" fill="#11171c" stroke="#3a4650" stroke-width="3"/><circle cx="190" cy="80" r="10" fill="#3a4650"/>'
 HYDRO = '<rect x="40" y="40" width="180" height="80" rx="6" fill="#11171c"/><circle cx="70" cy="80" r="14" fill="#2b6cb0"/><circle cx="190" cy="80" r="14" fill="#c53030"/>' \
         '<rect x="84" y="76" width="92" height="8" fill="#3a4650"/>'
 GPU_SVG = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#f6f7f9"/>
-<g transform="translate(50 95)"><rect width="300" height="100" rx="8" fill="#26313a"/><rect x="0" y="100" width="120" height="10" fill="#fab432"/>
+<g transform="translate(50 95)"><rect width="300" height="100" rx="8" fill="#26313a"/><rect x="0" y="100" width="120" height="10" fill="#e5133f"/>
 <circle cx="90" cy="50" r="36" fill="#11171c" stroke="#3a4650" stroke-width="3"/><circle cx="210" cy="50" r="36" fill="#11171c" stroke="#3a4650" stroke-width="3"/>
 <circle cx="90" cy="50" r="8" fill="#3a4650"/><circle cx="210" cy="50" r="8" fill="#3a4650"/></g>
 <text x="200" y="262" font-family="Roboto,Arial" font-size="15" fill="#66717c" text-anchor="middle">GPU-ускоритель</text></svg>'''
 HERO_SVG = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMid slice">
-<rect width="1600" height="700" fill="#11171c"/><g stroke="#26313a" stroke-width="2" fill="none">%s</g>
-<g fill="#fab432" opacity=".55">%s</g></svg>'''
+<rect width="1600" height="700" fill="#0a2342"/><g stroke="#1d4673" stroke-width="2" fill="none">%s</g>
+<g fill="#ff316e" opacity=".6">%s</g></svg>'''
 FAVICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#11171c"/>' \
-          '<path d="M7 23V9h4l5 7 5-7h4v14h-4v-8l-5 7-5-7v8z" fill="#fab432"/></svg>'
+          '<path d="M7 23V9h4l5 7 5-7h4v14h-4v-8l-5 7-5-7v8z" fill="#e5133f"/></svg>'
 
 
 def hero_svg():
@@ -58,6 +58,42 @@ def write(rel, text):
         f.write(text)
 
 
+SITEMAP_GROUPS = [   # порядок разделов на странице карты сайта
+    ('Серверы для ИИ', '/catalog/servery-dlya-ii/'), ('Фермы на видеокартах', '/catalog/mayning_fermy/'),
+    ('Видеокарты', '/catalog/videokarty/'), ('Сборки и тушки', '/catalog/sborki-dlya-ii/'),
+    ('Комплектующие', '/catalog/komplektuyushchie/'), ('ASIC-майнеры', '/catalog/asic_maynery/'),
+    ('Услуги', '/services/'), ('Статьи', '/blog/'), ('База знаний', '/knowledge/'), ('Калькуляторы', '/calc/'),
+]
+
+
+def make_sitemap_page():
+    """/karta-sajta/ — все страницы по разделам: людям для навигации, поисковикам — ссылки на каждую страницу."""
+    pages = [pg for pg in core.PAGES if pg.get('kind') != 'system' and pg['path'] != '/']
+    name = lambda pg: re.sub(r'<[^>]+>', '', pg.get('h1') or pg['title'].split(' — ')[0])
+    used, blocks = set(), []
+    for title, root in SITEMAP_GROUPS:
+        grp = [pg for pg in pages if pg['path'].startswith(root) and pg['path'] not in used]
+        if not grp:
+            continue
+        used.update(pg['path'] for pg in grp)
+        top = [pg for pg in grp if pg['path'] != root and pg['path'][len(root):].strip('/').count('/') == 0]
+        items = []
+        for pg in sorted(top, key=name):
+            sub = sorted([x for x in grp if x['path'].startswith(pg['path']) and x is not pg], key=name)
+            items.append('<li>%s%s</li>' % (core.a(pg['path'], name(pg)),
+                                            '<ul>%s</ul>' % ''.join('<li>%s</li>' % core.a(x['path'], name(x)) for x in sub) if sub else ''))
+        head = core.a(root, title) if any(pg['path'] == root for pg in grp) else title
+        blocks.append('<section><h2>%s</h2><ul>%s</ul></section>' % (head, ''.join(items)))
+    rest = [pg for pg in pages if pg['path'] not in used]
+    blocks.append('<section><h2>Компания</h2><ul>%s</ul></section>' % ''.join(
+        '<li>%s</li>' % core.a(pg['path'], name(pg)) for pg in sorted(rest, key=name)))
+    core.add(path='/karta-sajta/', kind='hub', title='Карта сайта MiningShop: все разделы и страницы',
+             description='Карта сайта MiningShop: серверы для ИИ, фермы на видеокартах, видеокарты, сборки, комплектующие, '
+                         'асики, услуги и статьи — все страницы по разделам.',
+             h1='Карта сайта', lead='Все страницы сайта по разделам.', crumbs=[('Карта сайта', '/karta-sajta/')],
+             body=core.section('<div class="sitemap">%s</div>' % ''.join(blocks)))
+
+
 def main():
     for name in os.listdir(OUT):
         if name not in KEEP:
@@ -72,6 +108,7 @@ def main():
     write(ui + 'favicon.svg', FAVICON)
 
     pages_blog.make_hub()
+    make_sitemap_page()
     for pg in core.PAGES:
         out = 'index.html' if pg['path'] == '/' else pg['path'].strip('/') + '/index.html'
         write(out, core.render(pg))

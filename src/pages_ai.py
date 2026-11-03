@@ -10,13 +10,14 @@
 пока строки для модели нет, на сайте «Цена по запросу».
 """
 import csv, os
-from core import (add, u, esc, h2, h3, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a, PROD)
+from core import (add, u, esc, h2, h3, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a, PROD, photo)
 
 VK = '/catalog/videokarty/'
 SRV = '/catalog/servery-dlya-ii/'
 BLD = '/catalog/sborki-dlya-ii/'
 BUYBACK = '/services/vykup-videokart/'
 FARM = '/catalog/mayning_fermy/'
+GPU_PHOTO = {'rtx-3090': '/assets/img/photos/palit-rtx-3090.webp'}   # живые фото карт со старого сайта
 
 # ------------------------------------------------------------------ цены
 PRICES = {}
@@ -254,7 +255,7 @@ def gpu_card(g):
             '<h3><a href="%s">%s</a></h3>'
             '<div class="specs-mini"><span>Память</span><b>%s</b><span>Цена</span><b>%s</b></div>'
             '<a class="btn btn-line" href="%s">Подробнее</a></div></article>'
-            % (g['fam'], u('/assets/img/ui/gpu.svg'), esc(g['name']), g['tag'], FAM[g['fam']], u(gpu_path(g)), g['short'],
+            % (g['fam'], u(GPU_PHOTO.get(g['key'], '/assets/img/ui/gpu.svg')), esc(g['name']), g['tag'], FAM[g['fam']], u(gpu_path(g)), g['short'],
                mem, price_line(g), u(gpu_path(g))))
 
 
@@ -446,12 +447,12 @@ def gpu_page(g):
            ('Соберёте станцию или сервер на %s?' % g['short'],
             'Да. Подберём платформу, питание и охлаждение, протестируем под нагрузкой — <a href="%s">сборки для ИИ</a>.' % u(BLD))]
     others = [x for x in G if x is not g and x['fam'] == g['fam']][:4] or [x for x in G if x is not g][:4]
-    body = (section('<div class="pd"><div class="pd-gallery"><div class="main"><img src="%s" alt="%s"></div></div>'
+    body = (section('<div class="pd"><div class="pd-gallery"><div class="main"><img src="%s" alt="%s" style="object-fit:contain;max-height:100%%"></div></div>'
                     '<div class="pd-info"><div class="tags"><span class="tag tag-accent">%s</span><span class="tag">%s</span></div>'
                     '<h1>%s</h1><p>%s.</p><div class="pd-price">%s<small>Новые и б/у с проверкой. Цена фиксируется в счёте</small></div>'
                     '<div class="pd-actions"><a class="btn btn-accent" href="%s">Узнать цену и наличие</a>'
                     '<a class="btn btn-line" href="%s">Сдать карту в зачёт</a></div></div></div>'
-                    % (u('/assets/img/ui/gpu.svg'), esc(g['name']), g['tag'], FAM[g['fam']], g['name'],
+                    % (u(GPU_PHOTO.get(g['key'], '/assets/img/ui/gpu.svg')), esc(g['name']), g['tag'], FAM[g['fam']], g['name'],
                        g['cls'][0].upper() + g['cls'][1:], price_line(g), u('/#podbor'), u(BUYBACK)), cls='sec-soft')
             + section('<div class="layout"><div class="prose">'
                       + h2('Варианты и цены', 'ceny') + ptable(['Вариант', 'Наличие', 'Цена'], vrows)
@@ -769,6 +770,7 @@ add(path=BLD + 'platformy/', kind='catalog',
     lead='Всё, кроме видеокарт: ставите свои карты и получаете станцию для ИИ или ферму. Собираем под 4–12 GPU.',
     crumbs=[('Каталог', '/catalog/'), ('Сборки для ИИ', BLD), ('Тушки', BLD + 'platformy/')],
     body=section('<div class="layout"><div class="prose">'
+                 + photo('tushka-bez-kart', 'Тушка: рама с платой и блоками питания без видеокарт', 'Тушка без видеокарт — наша сборка', eager=True)
                  + h2('Варианты', 'varianty')
                  + ptable(['Платформа', 'Для чего', 'Карт', 'Питание'],
                           [['Тушка под ИИ: EPYC или Threadripper, PCIe 4.0 x16, 128–256 ГБ ОЗУ', 'нейросети, обучение', '4', 'до 3 кВт'],

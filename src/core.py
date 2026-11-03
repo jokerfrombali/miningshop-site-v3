@@ -142,7 +142,7 @@ def steps(items):
 
 def cta_box(title, text, href='/contacts/', label='Обсудить задачу'):
     return ('<div class="cta-box"><h3>%s</h3><p>%s</p><a class="btn btn-accent" href="%s">%s</a>'
-            '<p style="margin:14px 0 0;font-size:14px">или позвоните: <a href="%s" style="color:#fab432;text-decoration:none">%s</a></p></div>'
+            '<p style="margin:14px 0 0;font-size:14px">или позвоните: <a href="%s" style="color:#ff5c82;text-decoration:none">%s</a></p></div>'
             % (title, text, u(href), label, C['phone_href'], C['phone']))
 
 
@@ -157,6 +157,19 @@ def section(inner, cls='', title='', sub='', center=False, anchor=''):
 def toc(items):
     return '<nav class="toc"><b>Содержание</b>%s</nav>' % ''.join(
         '<a href="#%s">%s</a>' % (anc, t) for t, anc in items)
+
+
+# ------------------------------------------------------------------ живые фото (свои снимки старого сайта, src/static/img/photos)
+def photo(name, alt, cap='', eager=False):
+    src = u('/assets/img/photos/%s.webp' % name)
+    sm = u('/assets/img/photos/%s-sm.webp' % name)
+    return ('<figure class="photo"><img src="%s" srcset="%s 700w, %s 1400w" sizes="(max-width:760px) 100vw, 50vw" alt="%s"%s>%s</figure>'
+            % (src, sm, src, esc(alt), '' if eager else ' loading="lazy"', '<figcaption>%s</figcaption>' % cap if cap else ''))
+
+
+def gallery(items, cols=3):
+    """items: (имя файла, alt, подпись)"""
+    return '<div class="gallery g%d">%s</div>' % (cols, ''.join(photo(*it) for it in items))
 
 
 # ------------------------------------------------------------------ шаблон
@@ -181,7 +194,7 @@ def header(path):
             if TEMPORARY else '')
     return (temp +
             '<header class="hdr"><div class="wrap">'
-            '<a class="logo" href="%s" aria-label="MiningShop — на главную"><img src="%s" alt="MiningShop" width="150" height="29">'
+            '<a class="logo" href="%s" aria-label="MiningShop — на главную"><img src="%s" srcset="%s 2x" alt="MiningShop" width="175" height="34">'
             '<small>видеокарты, серверы и сборки для ИИ</small></a>'
             '<nav class="nav" id="nav">%s</nav>'
             '<div class="hdr-contact"><a href="%s">%s</a><small>%s</small></div>'
@@ -189,7 +202,7 @@ def header(path):
             '<a class="btn btn-accent btn-sm hdr-cta" href="%s">Подобрать</a>'
             '<button class="burger" aria-controls="nav" aria-expanded="false" aria-label="Меню">%s</button>'
             '</div></header>'
-            % (u('/'), u('/assets/img/ui/logo.webp'), nav, C['phone_href'], C['phone'], C['hours'],
+            % (u('/'), u('/assets/img/ui/logo.webp'), u('/assets/img/ui/logo@2x.webp'), nav, C['phone_href'], C['phone'], C['hours'],
                C['tg'], icon('tg'), C['email'], icon('mail'), u('/#podbor'), icon('burger')))
 
 
@@ -201,12 +214,18 @@ def footer():
             '<a class="phone" href="%s">%s</a><a href="mailto:%s">%s</a><a href="%s">Telegram %s</a>'
             '<p style="margin:10px 0 0">%s<br>%s</p></div>'
             % (C['since'], C['phone_href'], C['phone'], C['email'], C['email'], C['tg'], C['tg_name'], C['address'], C['hours'])
-            + col('Каталог', [('Видеокарты для ИИ', '/catalog/videokarty/'), ('Tesla V100', '/catalog/videokarty/tesla-v100/'),
+            + col('Фермы и серверы', [('Фермы на видеокартах', '/catalog/mayning_fermy/'),
+                                      ('GPU-ферма для нейросетей', '/catalog/mayning_fermy/ferma-dlya-ii/'),
+                                      ('Ферма на RTX 3090', '/catalog/mayning_fermy/na-rtx-3090/'),
+                                      ('Ферма для биткоина', '/catalog/mayning_fermy/dlya-bitkoina/'),
+                                      ('Серверы для ИИ', '/catalog/servery-dlya-ii/'), ('Сервер для LLM', '/catalog/servery-dlya-ii/dlya-llm/'),
+                                      ('Сервер для обучения', '/catalog/servery-dlya-ii/dlya-obucheniya/'),
+                                      ('Серверы на 8 GPU', '/catalog/servery-dlya-ii/na-8-gpu/')])
+            + col('Каталог', [('Видеокарты для ИИ', '/catalog/videokarty/'), ('Видеокарты NVIDIA', '/catalog/videokarty/videokarty_nvidia/'),
+                              ('Tesla V100', '/catalog/videokarty/tesla-v100/'),
                               ('RTX 3090', '/catalog/videokarty/rtx-3090/'), ('RTX PRO 6000', '/catalog/videokarty/rtx-pro-6000/'),
-                              ('Серверы для ИИ', '/catalog/servery-dlya-ii/'), ('GPU-фермы для ИИ', '/catalog/mayning_fermy/ferma-dlya-ii/'),
                               ('Сборки и тушки', '/catalog/sborki-dlya-ii/'),
-                              ('Комплектующие', '/catalog/komplektuyushchie/'), ('Фермы на видеокартах', '/catalog/mayning_fermy/'),
-                              ('ASIC-майнеры', '/catalog/asic_maynery/')])
+                              ('Комплектующие', '/catalog/komplektuyushchie/'), ('ASIC-майнеры', '/catalog/asic_maynery/')])
             + col('Услуги', [('Выкуп видеокарт', '/services/vykup-videokart/'), ('Трейд-ин видеокарт', '/services/trade-in-videokart/'),
                              ('Сборка сервера для ИИ', '/services/sborka-servera-dlya-ii/'), ('Аренда GPU', '/services/arenda-gpu/'),
                              ('Размещение GPU-серверов', '/services/gpu-hosting/'), ('Хостинг асиков', '/services/hosting/'),
@@ -214,14 +233,14 @@ def footer():
             + col('Компания', [('Калькулятор видеопамяти', '/calc/vram/'), ('Доходность асиков', '/table/'), ('Статьи', '/blog/'),
                                ('О компании', '/company/about/'), ('Доставка и оплата', '/company/delivery/'),
                                ('Гарантия', '/company/guarantee/'), ('Контакты', '/contacts/'), ('Политика конфиденциальности', '/privacy/'),
-                               ('Пользовательское соглашение', '/terms/')])
+                               ('Пользовательское соглашение', '/terms/'), ('<b>Карта сайта</b>', '/karta-sajta/')])
             + '</div><div class="ftr-bottom"><span>© %d–2026 MiningShop. Информация на сайте не является публичной офертой.</span>'
               '<span>Расчёты доходности — ориентировочные, не инвестиционная рекомендация.</span></div></div></footer>' % C['since'])
 
 
 ORG_LD = {
     "@type": "Organization", "@id": PROD + "/#org", "name": "MiningShop", "url": PROD + "/",
-    "logo": PROD + "/logo.webp", "email": C['email'], "telephone": "+7-800-200-32-64",
+    "logo": PROD + "/assets/img/ui/logo@2x.webp", "email": C['email'], "telephone": "+7-800-200-32-64",
     "address": {"@type": "PostalAddress", "addressCountry": "RU", "addressLocality": "Москва",
                 "streetAddress": "шоссе Энтузиастов, 56, стр. 20"},
     "sameAs": [C['tg']],
@@ -269,15 +288,15 @@ def render(pg):
         '<meta property="og:type" content="website"><meta property="og:site_name" content="MiningShop">'
         '<meta property="og:title" content="%s"><meta property="og:description" content="%s">'
         '<meta property="og:url" content="%s"><meta property="og:locale" content="ru_RU">'
-        '<meta name="theme-color" content="#11171c">'
+        '<meta name="theme-color" content="#ffffff">'
         '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@400;500;700&display=swap">'
         '<link rel="stylesheet" href="%s">'
-        '<link rel="icon" href="%s">'
+        '<link rel="icon" href="%s" type="image/png"><link rel="apple-touch-icon" href="%s">'
         '<script type="application/ld+json">%s</script>%s'
         '</head><body>'
         % (esc(pg['title']), esc(pg['description']), robots, PROD + path, esc(pg['title']), esc(pg['description']),
-           PROD + path, u('/assets/site.css'), u('/assets/img/ui/favicon.svg'), ld_json, '' if TEMPORARY else METRIKA_JS))
+           PROD + path, u('/assets/site.css'), u('/assets/img/ui/favicon.png'), u('/assets/img/ui/apple-touch-icon.png'), ld_json, '' if TEMPORARY else METRIKA_JS))
     mbar = ('<nav class="mbar" aria-label="Связаться"><a href="%s">%sПозвонить</a><a href="%s">%sTelegram</a>'
             '<a class="go" href="%s">Подобрать</a></nav>' % (C['phone_href'], icon('phone'), C['tg'], icon('tg'), u('/#podbor')))
     return (head + header(path) + '<main>' + top + pg['body'] + '</main>' + footer() + mbar

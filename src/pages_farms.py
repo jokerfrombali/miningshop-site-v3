@@ -11,7 +11,7 @@
 - Подразделы /catalog/mayning_fermy/mayning_fermy_na_nvidia/ (1 393 входа) возвращаются по старому адресу.
 - «законна ли майнинг ферма в россии» и близкие ≈ 300 в месяц — отдельная статья.
 """
-from core import (add, u, h2, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a)
+from core import (add, u, h2, p, ul, ol, note, ptable, faq_html, faq_ld, cards, section, cta_box, a, photo, gallery)
 from pages_ai import VK, SRV, BLD, BUYBACK, FARM, size_table
 from pages_blog import article
 
@@ -62,7 +62,14 @@ add(path=FARM, kind='catalog',
     lead='С ферм MiningShop начинался в 2017 году. Сегодня собираем фермы на 6–8 видеокарт под нейросети, фермы на асиках '
          'для биткоина и переделываем старые майнинговые фермы под ИИ.',
     crumbs=CR,
-    body=section(cards([
+    body=section('<div class="photo-lead">' + photo('ferma-8-kart-stend', 'Ферма на 8 видеокартах на открытой раме, собрана MiningShop',
+                                                  'Ферма на 8 видеокартах из нашей сборки', eager=True)
+                 + '<div class="prose">' + h2('Собираем сами, в Москве', 'sami')
+                 + p('Каждую ферму собираем и тестируем у себя: рама, питание, кабели, прошивка, 24 часа под нагрузкой. '
+                     'На фото — наши сборки разных лет, от майнинговых ферм на RTX 30-й серии до стендов под нейросети.')
+                 + ul(['Собираем фермы с 2017 года.', 'Тест каждой сборки под нагрузкой перед отправкой.',
+                       'Доставка по России или размещение в дата-центре.']) + '</div></div>')
+    + section(cards([
         ('server', 'GPU-ферма для нейросетей', '6–8 карт по 24–48 ГБ на полных линиях PCIe: LLM, генерация, обучение.', FARM + 'ferma-dlya-ii/'),
         ('chip', 'Фермы на NVIDIA', 'RTX 3090, 4090, 5090, Tesla P40 и V100: конфигурации и питание.', FARM + 'mayning_fermy_na_nvidia/'),
         ('box', 'Ферма на RTX 3090', 'Самые доступные 24 ГБ на карту — бывший хит раздела, теперь под ИИ.', FARM + 'na-rtx-3090/'),
@@ -70,6 +77,10 @@ add(path=FARM, kind='catalog',
         ('wrench', 'Тушки без видеокарт', 'Платформы под 4–12 GPU — ставите свои карты.', BLD + 'platformy/'),
         ('calc', 'Выкуп карт и ферм', 'Оценим и выкупим ферму целиком или по картам.', BUYBACK),
     ], 3), cls='sec-soft')
+    + section(gallery([('ferma-rgb-podsvetka', 'Ферма на видеокартах с подсветкой', 'Ферма на 6 видеокартах'),
+                       ('ferma-rtx-3080-ti', 'Ферма на RTX 3080 Ti', 'Ферма на RTX 3080 Ti'),
+                       ('sklad-fermy', 'Готовые фермы на складе MiningShop', 'Готовые фермы перед отправкой')], 3),
+              title='Наши фермы', sub='Живые фото сборок MiningShop.')
     + section('<div class="layout"><div class="prose">'
               + h2('Какие фермы собираем', 'konfig')
               + farm_table(AI_FARMS)
@@ -119,6 +130,7 @@ add(path=FARM + 'ferma-dlya-ii/', kind='catalog',
          'Собираем фермы с 2017 года, теперь — под ИИ.',
     crumbs=CR + [('GPU-ферма для ИИ', FARM + 'ferma-dlya-ii/')],
     body=section('<div class="layout"><div class="prose">'
+                 + photo('ferma-rgb-podsvetka', 'GPU-ферма на открытой раме', 'Открытая рама: каждая карта на виду, обдув со всех сторон', eager=True)
                  + h2('Конфигурации', 'konfig') + farm_table(AI_FARMS)
                  + h2('Из чего состоит ферма под ИИ', 'sostav')
                  + ul(['<b>Плата и процессор:</b> AMD EPYC или Threadripper PRO на 64–128 линий PCIe — каждой карте x8–x16, а не x1.',
@@ -163,6 +175,7 @@ add(path=FARM + 'mayning_fermy_na_nvidia/', kind='catalog',
          'берём и чем они различаются.',
     crumbs=CR + [('На NVIDIA', FARM + 'mayning_fermy_na_nvidia/')],
     body=section('<div class="layout"><div class="prose">'
+                 + photo('ferma-ryad-kart', 'Ферма на видеокартах NVIDIA', 'Ферма на видеокартах NVIDIA из нашей сборки', eager=True)
                  + h2('Карты для фермы', 'karty')
                  + ptable(['Карта', 'Память', 'TDP', 'Особенности', 'Подробнее'], nv_rows)
                  + h2('Готовые конфигурации', 'konfig') + farm_table(AI_FARMS)
@@ -206,6 +219,7 @@ add(path=FARM + 'na-rtx-3090/', kind='product',
          'памяти для нейросетей.',
     crumbs=CR + [('На RTX 3090', FARM + 'na-rtx-3090/')],
     body=section('<div class="layout"><div class="prose">'
+                 + photo('ferma-rtx-3090', 'Ферма на видеокартах RTX 3090', 'Ферма на RTX 3090 — наша сборка', eager=True)
                  + h2('Конфигурации', 'konfig') + farm_table(r3_rows)
                  + h2('Состав', 'sostav')
                  + ul(['4–8 × ' + a(VK + 'rtx-3090/', 'RTX 3090 24 ГБ') + ', новые или б/у с проверкой.',
@@ -213,6 +227,7 @@ add(path=FARM + 'na-rtx-3090/', kind='product',
                        'Райзеры PCIe 4.0 x16, рама с промежутками для обдува.',
                        'Серверные блоки питания 2–3 кВт, NVMe 2–4 ТБ.',
                        'Ubuntu, драйверы, CUDA, vLLM или Ollama с загруженными моделями.'])
+                 + photo('palit-rtx-3090', 'Видеокарта Palit GeForce RTX 3090 GamingPro 24 ГБ', 'RTX 3090 24 ГБ')
                  + h2('Что на ней запускать', 'zadachi')
                  + p('Локальные языковые модели 70 млрд параметров без сжатия или крупные MoE-модели в 4 битах, генерация '
                      'изображений и видео в ComfyUI, распознавание речи, дообучение адаптеров LoRA. Если хватит 48–96 ГБ — '
@@ -261,6 +276,7 @@ add(path=FARM + 'dlya-bitkoina/', kind='catalog',
                     + a('/services/hosting/', 'хостинг') + '.',
                     'Электрика и охлаждение: щиты, кабели, вытяжка или ' + a(KP + 'zhidkostnoe-okhlazhdenie/', 'гидроохлаждение') + '.',
                     'Настройка пула, прошивки и мониторинга.'])
+              + photo('remont-asika', 'Обслуживание асика в мастерской MiningShop', 'Обслуживание асиков в нашей мастерской')
               + p('Весь проект от расчёта до работающей площадки — в услуге ' + a('/services/mining-pod-kljuch/', 'майнинг под ключ')
                   + '. Подробное руководство — ' + a('/blog/poleznye-materialy/asik-rukovodstvo-polzovatelya/', '«Асик: руководство пользователя»') + '.')
               + h2('Частые вопросы', 'faq') + faq_html(btc_faq) + '</div><aside class="aside">'

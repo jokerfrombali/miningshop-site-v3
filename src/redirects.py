@@ -47,6 +47,24 @@ def asic_model(slug):
     return ASIC_SUCCESSOR.get(s, s)
 
 
+# Первый сайт на OpenCart (2017–2018): разделы в корне адреса. Ведём только туда, где есть та же вещь;
+# клавиатуры, мыши, роутеры и прочее, чего на новом сайте нет, остаются 404.
+OPENCART = {
+    'fermy_dlja_majninga_kriptovaljuty': '/catalog/mayning_fermy/', 'sborka_i_nastrojka_majning_ferm': '/services/mining-pod-kljuch/',
+    'franshiza_majning': '/services/mining-pod-kljuch/', 'investicii_majning_promyshlennaya_ferma': '/services/mining-pod-kljuch/',
+    'videokarty_dlya_majninga': VK, 'nvidia': VK + 'videokarty_nvidia/', 'palit': VK + 'videokarty_nvidia/',
+    'gigabyte': VK, 'colorful': VK, 'evga': VK, 'powercolor': VK + 'radeon-ai-pro/', 'sapphire': VK + 'radeon-ai-pro/',
+    'amd': VK + 'radeon-ai-pro/', 'used_asics': '/catalog/asic_maynery/', 'bitmain': '/catalog/asic_maynery/bitmain/',
+    's9i_s9j': '/catalog/asic_maynery/bitmain/', 'asicminer': '/catalog/asic_maynery/', 'bitfury': '/catalog/asic_maynery/',
+    'ebang': '/catalog/asic_maynery/', 'canaan': '/catalog/asic_maynery/', 'pangolin': '/catalog/asic_maynery/',
+    'dayun': '/catalog/asic_maynery/', 'asrock': KP + 'materinskie_platy/', 'esonics': KP + 'materinskie_platy/',
+    'intel': KP + 'materinskie_platy/', 'corsair': KP + 'bloki_pitaniya/', 'chieftec': KP + 'bloki_pitaniya/',
+    'thermaltake': KP + 'bloki_pitaniya/', 'cougar': KP + 'bloki_pitaniya/', 'aerocool': KP + 'bloki_pitaniya/',
+    'provoda_dlja_majning_fermy': KP, 'vatchdogi': KP, 'emulyator-monitora': KP, 'katalog': '/catalog/',
+    'o_nas': '/company/about/', 'terms-of-use': '/terms/', 'sale': '/catalog/', 'do': '/services/remont-oborudovaniya/',
+}
+
+
 def target(path, known):
     """Куда вести старый адрес. None — оставить 404, 'GONE' — 410."""
     if path in known:
@@ -66,6 +84,17 @@ def target(path, known):
                 'meeting': '/contacts/'}.get(parts[1] if len(parts) > 1 else '', '/services/')
     if parts[0] == 'about' and len(parts) > 1:
         return {'delivery': '/company/delivery/', 'guaranty': '/company/guarantee/', 'contacts': '/contacts/'}.get(parts[1], '/company/about/')
+    if parts[0] in OPENCART:
+        dst = OPENCART[parts[0]]
+        if parts[0] in ('fermy_dlja_majninga_kriptovaljuty', 'videokarty_dlya_majninga') and len(parts) > 1:
+            if '3090' in low:
+                return '/catalog/mayning_fermy/na-rtx-3090/' if parts[0].startswith('fermy') else VK + 'rtx-3090/'
+            if parts[0].startswith('videokarty'):
+                for pat, d in GPU_WORDS:
+                    if re.search(pat, low):
+                        return d
+                return VK + 'bu/'
+        return dst
     if parts[0] != 'catalog':
         return ROOT_LANDINGS.get(parts[0])
     sec = parts[1] if len(parts) > 1 else ''
@@ -119,6 +148,14 @@ def target(path, known):
 def build(known):
     """Возвращает [(старый адрес, новый адрес или 'GONE')] для всех старых адресов, которые не совпадают с новыми."""
     old = [x.strip() for x in open(os.path.join(HERE, 'data', 'legacy_urls.txt'), encoding='utf-8') if x.strip()]
+    # адреса входа из Метрики 2021–2025 (data/legacy_weight.tsv): часть самых сильных старых адресов в архиве страниц
+    # не сохранилась, и без этого они отдавали бы 404 — например, /catalog/fermy_dlya_mayninga/ с 86 тыс. входов
+    oc = os.path.join(HERE, 'data', 'legacy_opencart.txt')   # 566 адресов первого сайта из архива
+    if os.path.exists(oc):
+        old += [x.strip() for x in open(oc, encoding='utf-8') if x.strip()]
+    wf = os.path.join(HERE, 'data', 'legacy_weight.tsv')
+    if os.path.exists(wf):
+        old += [l.split('\t')[3] for l in open(wf, encoding='utf-8').read().splitlines()[1:] if l.count('\t') >= 4]
     old += ['/knowledge/', '/forum/', '/news/', '/seo/antminer-s21-xp-hyd/'] + [
         '/knowledge/%s/' % r for r in ('basics', 'hardware', 'maintenance', 'security', 'setup', 'software')]
     out = []
@@ -130,12 +167,25 @@ def build(known):
     return out
 
 
+def apache_rx(path):
+    """Регулярное выражение для RedirectMatch: Apache сравнивает с раскодированным адресом (%20 -> пробел, %D0%B0 -> «а»),
+    а пробел в строке .htaccess разрывает директиву и даёт ошибку 500 на весь сайт — поэтому пробел пишем как \\s."""
+    from urllib.parse import unquote
+    return re.escape(unquote(path).rstrip('/')).replace('\\ ', '\\s')
+
+
 def htaccess(rules, prod):
     lines = ['# Сгенерировано src/redirects.py — правьте там, а не здесь.', 'Options -Indexes', 'ErrorDocument 404 /404.html', '']
+    seen = set()
     for old, new in rules:
-        rx = '^' + re.escape(old.rstrip('/')) + '/?$'
+        rx = apache_rx(old)
+        if rx in seen:          # «/a b/» и «/a%20b/» — один и тот же адрес для Apache
+            continue
+        seen.add(rx)
         if new == 'GONE':
-            lines.append('RedirectMatch 410 ^%s(/.*)?$' % re.escape(old.rstrip('/')))
+            lines.append('RedirectMatch 410 ^%s(/.*)?$' % rx)
         else:
-            lines.append('RedirectMatch 301 %s %s%s' % (rx, prod, new))
+            lines.append('RedirectMatch 301 ^%s/?$ %s%s' % (rx, prod, new))
+    for l in lines:
+        assert not l.startswith('RedirectMatch') or len(l.split()) == (3 if ' 410 ' in l else 4), l
     return '\n'.join(lines) + '\n'

@@ -175,7 +175,18 @@ def apache_rx(path):
 
 
 def htaccess(rules, prod):
-    lines = ['# Сгенерировано src/redirects.py — правьте там, а не здесь.', 'Options -Indexes', 'ErrorDocument 404 /404.html', '']
+    host = prod.split('//', 1)[1]
+    hrx = re.escape(host)
+    lines = ['# Сгенерировано src/redirects.py — правьте там, а не здесь.', 'Options -Indexes', 'ErrorDocument 404 /404.html', '',
+             '# Один адрес сайта: https://%s без www. Всё остальное — 301 сюда же, с тем же путём.' % host,
+             '# Timeweb принимает https на прокси, поэтому протокол смотрим и в %{HTTPS}, и в X-Forwarded-Proto.',
+             '<IfModule mod_rewrite.c>', 'RewriteEngine On',
+             'RewriteCond %{HTTP_HOST} !^' + hrx + '$ [NC]',
+             'RewriteRule ^ https://' + host + '%{REQUEST_URI} [L,R=301,NE]',
+             'RewriteCond %{HTTPS} !=on',
+             'RewriteCond %{HTTP:X-Forwarded-Proto} !=https',
+             'RewriteRule ^ https://' + host + '%{REQUEST_URI} [L,R=301,NE]',
+             '</IfModule>', '']
     seen = set()
     for old, new in rules:
         rx = apache_rx(old)
